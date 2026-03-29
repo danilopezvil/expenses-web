@@ -7,6 +7,7 @@ interface GroupSwitcherProps {
   onCreateGroup?: () => void;
 }
 
+
 export function GroupSwitcher({ onCreateGroup }: GroupSwitcherProps) {
   const activeGroup = useGroupStore((s) => s.activeGroup);
   const groups = useGroupStore((s) => s.groups);
@@ -15,7 +16,7 @@ export function GroupSwitcher({ onCreateGroup }: GroupSwitcherProps) {
   return (
     <div className="relative group/switcher">
       {/* Trigger */}
-      <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container transition-all duration-200 text-left">
+      <button type="button" className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container transition-all duration-200 text-left">
         <div className="w-7 h-7 rounded bg-primary flex items-center justify-center text-on-primary text-xs font-bold shrink-0">
           {activeGroup?.name?.[0]?.toUpperCase() ?? '?'}
         </div>
@@ -49,6 +50,7 @@ export function GroupSwitcher({ onCreateGroup }: GroupSwitcherProps) {
           )}
           {groups.map((group: Group) => (
             <button
+              type="button"
               key={group.id}
               onClick={() => setActiveGroup(group)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors duration-150 hover:bg-surface-container ${
@@ -79,6 +81,7 @@ export function GroupSwitcher({ onCreateGroup }: GroupSwitcherProps) {
           {/* Divider + Create */}
           <div className="border-t border-outline-variant/20">
             <button
+              type="button"
               onClick={onCreateGroup}
               className="w-full flex items-center gap-3 px-4 py-3 text-sm text-primary font-bold hover:bg-surface-container transition-colors duration-150"
             >

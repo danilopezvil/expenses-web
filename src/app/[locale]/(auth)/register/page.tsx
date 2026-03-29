@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { authApi } from '@/lib/api/auth.api';

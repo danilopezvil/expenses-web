@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Apex Ledger - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed": "#ffdad5",
+                        "background": "#fcf9f8",
+                        "tertiary": "#00647f",
+                        "secondary": "#aa352b",
+                        "on-surface": "#1c1b1b",
+                        "surface-dim": "#dcd9d9",
+                        "primary": "#bc000a",
+                        "on-tertiary-fixed": "#001f29",
+                        "tertiary-fixed": "#bbe9ff",
+                        "on-secondary-container": "#6f0807",
+                        "surface-bright": "#fcf9f8",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "on-tertiary-fixed-variant": "#004d63",
+                        "on-primary-fixed": "#410001",
+                        "surface-tint": "#c0000a",
+                        "secondary-fixed": "#ffdad5",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f0eded",
+                        "on-surface-variant": "#5d3f3b",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#e7bdb7",
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<!-- SideNavBar Implementation -->
+<aside class="fixed left-0 top-0 bottom-0 w-64 h-full bg-[#f6f3f2] flex flex-col py-6 px-4 space-y-2 z-50">
+<div class="px-4 mb-8">
+<h1 class="text-xl font-extrabold tracking-tight text-[#bc000a]">Apex Ledger</h1>
+<p class="text-xs text-on-surface-variant font-medium">Shared Finance</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard is active -->
+<a class="flex items-center gap-3 px-4 py-3 text-[#1c1b1b] font-bold border-r-4 border-[#bc000a] bg-[#e5e2e1] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-sm">Gastos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="text-sm">Importar</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+<span class="text-sm">Cuentas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-sm">Miembros</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-sm">Pagos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#5d3f3b] hover:text-[#bc000a] hover:bg-[#ffffff]/50 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-sm">Reportes</span>
+</a>
+</nav>
+<div class="pt-6 border-t border-outline-variant/20 space-y-1">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold text-sm mb-4 transition-all hover:opacity-90 active:scale-95">
+                New Expense
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-[#5d3f3b] hover:text-[#bc000a] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="text-sm">Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#5d3f3b] hover:text-[#bc000a] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar Implementation -->
+<header class="sticky top-0 right-0 left-0 h-16 bg-[#fcf9f8]/80 backdrop-blur-xl flex items-center justify-between px-8 z-40 shadow-sm">
+<div class="flex items-center gap-8">
+<h2 class="text-2xl font-black tracking-tighter text-[#1c1b1b]">Dashboard</h2>
+<div class="flex items-center gap-2">
+<select class="bg-surface-container-high border-none rounded-lg text-sm font-medium py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-primary/40">
+<option>01 - Enero</option>
+<option selected="">05 - Mayo</option>
+<option>12 - Diciembre</option>
+</select>
+<select class="bg-surface-container-high border-none rounded-lg text-sm font-medium py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-primary/40">
+<option>2023</option>
+<option selected="">2024</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border-2 border-primary-fixed">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up professional headshot of a smiling man with clean background soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFTHK-Q0FYUdEXf0oUdujRcjy45AqutQ22yHzlzfFo7eXCfne16eshMGsDv1Q4szMIdmsdSWVaw8PPrwUeNGowF8YCfKNMzQRV5Fo_xe0mrhw6TZ2IOCPSlCwN-H7dSmuls2ZL7jTvIrXWFFCMRzKFmIEvyger9w9I6sYX19YNuEJlhCwJGzZJAEHjPwV6Nq1f8kWJt03WmKZ55xAzIZCPLEAgcqavX_HnnmkYZcjFBGZnpPKFtQ2fbpbZQcI88Vl4AkBH-RyQLDE"/>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Unassigned Banner -->
+<div class="bg-[#fffbeb] border border-[#fef3c7] p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3 text-[#92400e]">
+<span class="material-symbols-outlined text-amber-500" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-medium text-sm italic">4 gastos sin asignar por $260</span>
+</div>
+<a class="text-xs font-bold uppercase tracking-wider text-[#b45309] hover:underline" href="/expenses?assigned=false">
+                    Revisar ahora →
+                </a>
+</div>
+<!-- KPI Grid (4x1) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-4 border-primary">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Total</p>
+<h3 class="text-3xl font-black text-on-surface">$1,240</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Asignado</p>
+<h3 class="text-3xl font-black text-tertiary">$980</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Sin asig.</p>
+<h3 class="text-3xl font-black text-secondary">$260</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Gastos</p>
+<h3 class="text-3xl font-black text-on-surface">23</h3>
+</div>
+</div>
+<!-- Two Column Charts Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- ByMemberChart -->
+<section class="bg-surface-container-low p-8 rounded-xl">
+<h4 class="text-lg font-bold mb-8 flex items-center justify-between">
+                        Distribución por Miembro
+                        <span class="material-symbols-outlined text-on-surface-variant" data-icon="more_horiz">more_horiz</span>
+</h4>
+<div class="space-y-8">
+<!-- Ana -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Ana</span>
+<div class="text-right">
+<span class="text-sm font-black">$540</span>
+<span class="text-xs text-on-surface-variant ml-1">43%</span>
+</div>
+</div>
+<div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 43%;"></div>
+</div>
+</div>
+<!-- Luis -->
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<span class="text-sm font-bold text-on-surface">Luis</span>
+<div class="text-right">
+<span class="text-sm font-black">$440</span>
+<span class="text-xs text-on-surface-variant ml-1">35%</span>
+</div>
+</div>
+<div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full transition-all duration-1000" style="width: 35%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ByCategoryChart -->
+<section class="bg-surface-container-low p-8 rounded-xl">
+<h4 class="text-lg font-bold mb-8 flex items-center justify-between">
+                        Gastos por Categoría
+                        <span class="material-symbols-outlined text-on-surface-variant" data-icon="filter_list">filter_list</span>
+</h4>
+<div class="space-y-6">
+<!-- Supermercado -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-tighter">Supermercado</span>
+<span class="text-xs font-black">$380 (30%)</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+</div>
+<!-- Restaurante -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-tighter">Restaurante</span>
+<span class="text-xs font-black">$240 (19%)</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 19%;"></div>
+</div>
+</div>
+</div>
+<!-- Transporte -->
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-highest rounded-lg text-primary">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-tighter">Transporte</span>
+<span class="text-xs font-black">$180 (14%)</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 14%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- ByAccountSummary -->
+<section class="space-y-4">
+<h4 class="text-sm font-black uppercase tracking-widest text-on-surface-variant px-1">Cuentas Activas</h4>
+<div class="flex flex-wrap gap-4">
+<div class="flex-1 min-w-[200px] bg-surface-container-lowest px-6 py-4 rounded-full flex items-center justify-between border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="credit_card">credit_card</span>
+<span class="text-sm font-semibold">Tarjeta Principal</span>
+</div>
+<span class="font-black text-on-surface">$820</span>
+</div>
+<div class="flex-1 min-w-[200px] bg-surface-container-lowest px-6 py-4 rounded-full flex items-center justify-between border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+<span class="text-sm font-semibold">Efectivo</span>
+</div>
+<span class="font-black text-on-surface">$160</span>
+</div>
+<div class="flex-1 min-w-[200px] bg-surface-container-lowest px-6 py-4 rounded-full flex items-center justify-between border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="account_balance">account_balance</span>
+<span class="text-sm font-semibold">Débito</span>
+</div>
+<span class="font-black text-on-surface">$260</span>
+</div>
+</div>
+</section>
+<!-- Bottom decorative section -->
+<div class="relative h-48 rounded-xl overflow-hidden group">
+<img alt="Financial Ledger" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Modern high-end workplace with digital devices and minimalist financial journals, soft neutral tones with premium feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4Ngq3Q7zUvyJ5dAQkJ1onBbpmrshoWVk-hwx-5JlIcFMfALfIWy5yU2Ob4ZGGwI3k6eotir-WFRNr3NcbvpuIEhmP0n64rfiBKND_QzUcIXBoSXJhkSFQsKZuNKd203I-K20tJ9Wn50ObIw-ScyeTH7MGpzow709tpkppo_IAjWbvsIoUYRck0R7rk1FhV9nKDuuTih8od2yYg0vPS2baa7gm9FcHurdqq5uyi7dJ2Ydk8jBD1mMKja_2F-IoGAGe2plVfmm9xx4"/>
+<div class="absolute inset-0 bg-gradient-to-r from-on-surface/80 to-transparent flex items-center p-12">
+<div class="max-w-md">
+<h3 class="text-2xl font-black text-white mb-2 leading-tight">Optimiza tu flujo de caja familiar.</h3>
+<p class="text-white/80 text-sm font-medium">Revisa las sugerencias de ahorro personalizadas según tus patrones de gasto del último trimestre.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

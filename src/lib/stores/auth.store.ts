@@ -13,21 +13,22 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isLoading: boolean;
+  /** True after the persist middleware has finished reading localStorage */
+  _hydrated: boolean;
 }
 
 interface AuthActions {
   setAuth: (user: AuthUser, accessToken: string, refreshToken: string) => void;
   clearAuth: () => void;
   setLoading: (isLoading: boolean) => void;
+  _setHydrated: () => void;
 }
 
 type AuthStore = AuthState & AuthActions;
 
-/** Sync a lightweight cookie so the middleware can detect authenticated sessions */
 function setSessionCookie(value: string | null) {
   if (typeof document === 'undefined') return;
   if (value) {
-    // SameSite=Strict, no httpOnly (client needs to set it)
     document.cookie = `x-auth-user=${encodeURIComponent(value)}; path=/; SameSite=Strict`;
   } else {
     document.cookie = 'x-auth-user=; path=/; SameSite=Strict; Max-Age=0';
@@ -41,6 +42,7 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       refreshToken: null,
       isLoading: false,
+      _hydrated: false,
 
       setAuth: (user, accessToken, refreshToken) => {
         if (typeof window !== 'undefined') {
@@ -59,6 +61,8 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       setLoading: (isLoading) => set({ isLoading }),
+
+      _setHydrated: () => set({ _hydrated: true }),
     }),
     {
       name: 'expenses-auth',
@@ -68,14 +72,24 @@ export const useAuthStore = create<AuthStore>()(
         refreshToken: state.refreshToken,
       }),
       onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.accessToken = null;
-          // Re-sync cookie after rehydration so middleware stays in sync
-          if (state.user) {
-            setSessionCookie(state.user.id);
-          }
+        // Restore session cookie when user comes back from localStorage
+        if (state?.user) {
+          setSessionCookie(state.user.id);
         }
       },
     }
   )
 );
+
+// Mark hydration complete AFTER the store is created.
+// localStorage is synchronous — by the time create() returns, rehydration is already done.
+// We use the persist API here so useAuthStore is guaranteed to be defined.
+if (typeof window !== 'undefined') {
+  if (useAuthStore.persist.hasHydrated()) {
+    useAuthStore.setState({ _hydrated: true, accessToken: null });
+  } else {
+    useAuthStore.persist.onFinishHydration(() => {
+      useAuthStore.setState({ _hydrated: true, accessToken: null });
+    });
+  }
+}

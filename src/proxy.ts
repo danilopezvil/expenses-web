@@ -16,19 +16,16 @@ export default function middleware(request: NextRequest) {
   const isAuthRoute = AUTH_ROUTES.some((r) => pathnameWithoutLocale.startsWith(r));
   const isProtectedRoute = PROTECTED_ROUTES.some((r) => pathnameWithoutLocale.startsWith(r));
 
-  // Read persisted auth from the Zustand localStorage key via a cookie that
-  // the client sets. Since localStorage is inaccessible in middleware, we rely
-  // on a lightweight `x-auth-user` cookie written by the client after login.
   const hasSession = request.cookies.has('x-auth-user');
 
   if (isProtectedRoute && !hasSession) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('from', pathnameWithoutLocale);
+    const loginUrl = new URL(`/${routing.defaultLocale}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuthRoute && hasSession) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    const dashboardUrl = new URL(`/${routing.defaultLocale}/dashboard`, request.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   return intlMiddleware(request);

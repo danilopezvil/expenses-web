@@ -29,6 +29,7 @@ export interface Member {
   name: string;
   email: string;
   role: 'OWNER' | 'ADMIN' | 'MEMBER';
+  color?: string;
 }
 
 export interface Account {
@@ -111,13 +112,49 @@ export interface Export {
   createdAt?: string;
 }
 
+// ── Dashboard ───────────────────────────────────────────────────────────────
+
+export interface DashboardMemberStat {
+  memberId: string;
+  name: string;
+  color: string;
+  total: number;
+  percentage: number;
+  expenseCount: number;
+}
+
+export interface DashboardCategoryStat {
+  categoryId: string;
+  name: string;
+  icon?: string;
+  color?: string;
+  total: number;
+  percentage: number;
+  expenseCount: number;
+}
+
+export interface DashboardAccountStat {
+  accountId: string;
+  name: string;
+  type: ExpenseSource;
+  total: number;
+}
+
+export interface DashboardUnassigned {
+  count: number;
+  total: number;
+}
+
 export interface DashboardResponse {
-  totalExpenses: number;
   totalAmount: number;
-  pendingExpenses: number;
-  members: Member[];
+  assignedAmount: number;
+  unassignedAmount: number;
+  expenseCount: number;
+  byMember: DashboardMemberStat[];
+  byCategory: DashboardCategoryStat[];
+  byAccount: DashboardAccountStat[];
+  unassigned: DashboardUnassigned;
   recentExpenses: Expense[];
-  balances: Record<string, number>;
 }
 
 export interface ReconciliationItem {
