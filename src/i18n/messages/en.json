@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "expenses": "Expenses",
+    "import": "Import",
+    "accounts": "Accounts",
+    "members": "Members",
+    "payments": "Payments",
+    "reports": "Reports"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name"
+  },
+  "expenses": {
+    "title": "Expenses",
+    "new": "New expense",
+    "description": "Description",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "account": "Account",
+    "status": "Status",
+    "source": "Source"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "empty": "No results",
+    "search": "Search",
+    "filter": "Filter"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "CLASSIFIED": "Classified",
+    "ASSIGNED": "Assigned",
+    "VOIDED": "Voided",
+    "IMPORTED": "Imported"
+  },
+  "source": {
+    "CARD": "Card",
+    "CASH": "Cash",
+    "TRANSFER": "Transfer",
+    "DIGITAL_WALLET": "Digital wallet"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "dashboard": "Panel",
+    "expenses": "Gastos",
+    "import": "Importar",
+    "accounts": "Cuentas",
+    "members": "Miembros",
+    "payments": "Pagos",
+    "reports": "Reportes"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre"
+  },
+  "expenses": {
+    "title": "Gastos",
+    "new": "Nuevo gasto",
+    "description": "Descripción",
+    "amount": "Monto",
+    "date": "Fecha",
+    "category": "Categoría",
+    "account": "Cuenta",
+    "status": "Estado",
+    "source": "Origen"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "empty": "Sin resultados",
+    "search": "Buscar",
+    "filter": "Filtrar"
+  },
+  "status": {
+    "PENDING": "Pendiente",
+    "CLASSIFIED": "Clasificado",
+    "ASSIGNED": "Asignado",
+    "VOIDED": "Anulado",
+    "IMPORTED": "Importado"
+  },
+  "source": {
+    "CARD": "Tarjeta",
+    "CASH": "Efectivo",
+    "TRANSFER": "Transferencia",
+    "DIGITAL_WALLET": "Billetera digital"
+  }
+}
