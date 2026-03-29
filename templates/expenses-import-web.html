@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Importar Gastos - GastoCompartido</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#004d63",
+              "surface-container-high": "#eae7e7",
+              "surface": "#fcf9f8",
+              "on-tertiary": "#ffffff",
+              "tertiary-container": "#007fa0",
+              "primary-fixed": "#ffdad5",
+              "error-container": "#ffdad6",
+              "secondary-container": "#fd7363",
+              "surface-container-highest": "#e5e2e1",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#f3f0ef",
+              "surface-dim": "#dcd9d9",
+              "secondary-fixed-dim": "#ffb4aa",
+              "on-error-container": "#93000a",
+              "primary": "#bc000a",
+              "on-surface-variant": "#5d3f3b",
+              "surface-container": "#f0eded",
+              "surface-container-low": "#f6f3f2",
+              "tertiary-fixed": "#bbe9ff",
+              "primary-fixed-dim": "#ffb4aa",
+              "surface-bright": "#fcf9f8",
+              "tertiary": "#00647f",
+              "on-primary-fixed-variant": "#930005",
+              "on-background": "#1c1b1b",
+              "secondary": "#aa352b",
+              "on-secondary-fixed": "#410001",
+              "on-primary-container": "#fffbff",
+              "outline-variant": "#e7bdb7",
+              "inverse-surface": "#313030",
+              "on-primary-fixed": "#410001",
+              "on-tertiary-fixed": "#001f29",
+              "on-secondary-fixed-variant": "#891d16",
+              "tertiary-fixed-dim": "#68d3fc",
+              "secondary-fixed": "#ffdad5",
+              "primary-container": "#e2241f",
+              "outline": "#926f6a",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-tertiary-container": "#fafdff",
+              "surface-tint": "#c0000a",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#1c1b1b",
+              "inverse-primary": "#ffb4aa",
+              "surface-variant": "#e5e2e1",
+              "on-secondary-container": "#6f0807",
+              "error": "#ba1a1a",
+              "background": "#fcf9f8"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="w-[240px] h-screen sticky top-0 left-0 bg-[#fcf9f8] dark:bg-stone-950 flex flex-col py-6 px-4">
+<div class="mb-10 px-2">
+<h1 class="text-xl font-extrabold tracking-tighter text-[#bc000a]">GastoCompartido</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-400 mt-1">Apex Ledger</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Gastos</span>
+</a>
+<!-- Active State: Importar -->
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-bold tracking-tight text-[#bc000a] bg-stone-100/50 border-r-2 border-[#bc000a] transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file" style="font-variation-settings: 'FILL' 1;">upload_file</span>
+<span>Importar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+<span>Cuentas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Miembros</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Pagos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold tracking-tight text-stone-600 hover:bg-[#e5e2e1] transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Reportes</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold text-sm shadow-lg shadow-primary/10 hover:bg-primary-container transition-all active:scale-95">
+                Nuevo Gasto
+            </button>
+<div class="pt-4 border-t border-outline-variant/20 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-stone-600 hover:text-[#bc000a]" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span>Mi Perfil</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm font-semibold text-stone-600 hover:text-[#bc000a]" href="#">
+<span class="material-symbols-outlined" data-icon="Swap_horiz">swap_horiz</span>
+<span>Grupo Principal</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar Anchor -->
+<header class="sticky top-0 z-40 w-full bg-[#fcf9f8]/80 backdrop-blur-md flex justify-between items-center h-16 px-8">
+<div>
+<nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+<span class="opacity-50">Transacciones</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">Importación Inteligente</span>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all" data-icon="settings">settings</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-all">Exportar PDF</button>
+<button class="px-5 py-2 text-sm font-bold bg-primary text-on-primary rounded-lg shadow-sm hover:opacity-80 transition-all">Liquidar</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-12 max-w-5xl mx-auto w-full">
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-xl">
+<h2 class="text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-tight">
+                        Importar <span class="text-primary">Gastos</span>.
+                    </h2>
+<p class="text-lg text-on-surface-variant leading-relaxed font-medium">
+                        Pega tus transacciones directamente desde tu banca móvil o portapapeles. Nuestro motor detectará automáticamente fechas, montos y comercios.
+                    </p>
+</div>
+<div class="flex items-center gap-4 text-xs font-bold text-primary tracking-widest uppercase">
+<span class="h-[2px] w-8 bg-primary"></span>
+<span>Paso 1 de 2</span>
+</div>
+</div>
+<!-- Bento Layout for Form -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Input Area (Left Column - Larger) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+<div class="bg-surface-container-lowest rounded-xl p-1 shadow-sm transition-shadow hover:shadow-md ring-1 ring-outline-variant/10">
+<textarea class="w-full h-80 p-8 bg-transparent border-none focus:ring-0 text-xl font-medium font-body placeholder:text-surface-dim text-on-surface resize-none leading-relaxed" placeholder="Ejemplo:
+15/03 Supermercado La Favorita | 45.80
+16/03 Farmacia Fybeca | 23.50">15/03 Supermercado La Favorita | 45.80
+16/03 Farmacia Fybeca | 23.50</textarea>
+</div>
+<div class="flex items-center justify-between px-2">
+<span class="text-xs font-semibold text-on-surface-variant/60 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+                            Formatos soportados: CSV, Texto Plano, Copiar/Pegar.
+                        </span>
+<span class="text-xs font-bold text-on-surface-variant">2 líneas detectadas</span>
+</div>
+</div>
+<!-- Settings & Action (Right Column - Controls) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<!-- Account Picker -->
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-extrabold uppercase tracking-widest text-on-surface-variant">Cuenta de Origen</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-lowest border-none rounded-lg py-4 px-4 text-sm font-bold text-on-surface shadow-sm appearance-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer">
+<option>Tarjeta Principal</option>
+<option>Efectivo Personal</option>
+<option>Cuenta Corriente (Bancaria)</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant group-hover:text-primary transition-colors" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Year Input -->
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-extrabold uppercase tracking-widest text-on-surface-variant">Año Fiscal</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-lg py-4 px-4 text-sm font-bold text-on-surface shadow-sm focus:ring-2 focus:ring-primary/20 transition-all" type="number" value="2026"/>
+</div>
+</div>
+<!-- Guidelines Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl ring-1 ring-outline-variant/10 shadow-sm relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-8xl" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h4 class="text-xs font-extrabold uppercase tracking-widest text-primary mb-3">Consejo Pro</h4>
+<p class="text-sm font-medium text-on-surface-variant leading-relaxed">
+                            No te preocupes por el orden. Nuestra IA organizará las transacciones cronológicamente en el siguiente paso.
+                        </p>
+</div>
+<!-- CTA Section -->
+<div class="mt-auto pt-6 flex flex-col gap-4">
+<button class="w-full bg-primary-container bg-gradient-to-r from-primary to-primary-container text-on-primary py-5 px-8 rounded-lg font-bold text-sm shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-between">
+<span>Vista previa</span>
+<span class="material-symbols-outlined" data-icon="arrow_right_alt">arrow_right_alt</span>
+</button>
+<button class="w-full py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest hover:text-primary transition-colors">
+                            Cancelar Importación
+                        </button>
+</div>
+</div>
+</div>
+<!-- Visual Ledger Background Decorative Element -->
+<div class="mt-24 opacity-20 select-none pointer-events-none">
+<div class="flex flex-col gap-8">
+<div class="h-[1px] w-full bg-gradient-to-r from-transparent via-outline-variant to-transparent"></div>
+<div class="flex justify-between items-center px-12 italic text-sm font-medium text-on-surface-variant">
+<span>ASSET_LEDGER_SYSTEM_V4</span>
+<div class="flex gap-12">
+<span>#BC000A</span>
+<span>APEX_ENGINE_ENABLED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

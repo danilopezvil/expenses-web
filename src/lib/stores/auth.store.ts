@@ -23,6 +23,17 @@ interface AuthActions {
 
 type AuthStore = AuthState & AuthActions;
 
+/** Sync a lightweight cookie so the middleware can detect authenticated sessions */
+function setSessionCookie(value: string | null) {
+  if (typeof document === 'undefined') return;
+  if (value) {
+    // SameSite=Strict, no httpOnly (client needs to set it)
+    document.cookie = `x-auth-user=${encodeURIComponent(value)}; path=/; SameSite=Strict`;
+  } else {
+    document.cookie = 'x-auth-user=; path=/; SameSite=Strict; Max-Age=0';
+  }
+}
+
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
@@ -32,9 +43,9 @@ export const useAuthStore = create<AuthStore>()(
       isLoading: false,
 
       setAuth: (user, accessToken, refreshToken) => {
-        // Keep access token in memory AND expose it on window for the API client
         if (typeof window !== 'undefined') {
           (window as unknown as Record<string, unknown>).__zustand_auth_token__ = accessToken;
+          setSessionCookie(user.id);
         }
         set({ user, accessToken, refreshToken, isLoading: false });
       },
@@ -42,6 +53,7 @@ export const useAuthStore = create<AuthStore>()(
       clearAuth: () => {
         if (typeof window !== 'undefined') {
           delete (window as unknown as Record<string, unknown>).__zustand_auth_token__;
+          setSessionCookie(null);
         }
         set({ user: null, accessToken: null, refreshToken: null, isLoading: false });
       },
@@ -51,16 +63,17 @@ export const useAuthStore = create<AuthStore>()(
     {
       name: 'expenses-auth',
       storage: createJSONStorage(() => localStorage),
-      // Only persist user and refreshToken — accessToken stays in memory only
       partialize: (state) => ({
         user: state.user,
         refreshToken: state.refreshToken,
       }),
       onRehydrateStorage: () => (state) => {
-        // After rehydration the accessToken is null (not persisted).
-        // The app should call /auth/refresh on mount to restore it.
         if (state) {
           state.accessToken = null;
+          // Re-sync cookie after rehydration so middleware stays in sync
+          if (state.user) {
+            setSessionCookie(state.user.id);
+          }
         }
       },
     }

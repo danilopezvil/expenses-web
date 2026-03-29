@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Apex Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-container": "#fffbff",
+              "secondary-container": "#fd7363",
+              "on-tertiary-container": "#fafdff",
+              "on-background": "#1c1b1b",
+              "inverse-surface": "#313030",
+              "on-secondary": "#ffffff",
+              "surface": "#fcf9f8",
+              "surface-tint": "#c0000a",
+              "surface-bright": "#fcf9f8",
+              "on-tertiary-fixed-variant": "#004d63",
+              "surface-container": "#f0eded",
+              "tertiary-fixed-dim": "#68d3fc",
+              "on-primary-fixed": "#410001",
+              "error-container": "#ffdad6",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#eae7e7",
+              "surface-dim": "#dcd9d9",
+              "on-surface": "#1c1b1b",
+              "inverse-primary": "#ffb4aa",
+              "inverse-on-surface": "#f3f0ef",
+              "on-primary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "primary-container": "#e2241f",
+              "error": "#ba1a1a",
+              "tertiary-fixed": "#bbe9ff",
+              "surface-variant": "#e5e2e1",
+              "secondary-fixed": "#ffdad5",
+              "primary": "#bc000a",
+              "on-secondary-fixed": "#410001",
+              "on-primary-fixed-variant": "#930005",
+              "on-secondary-fixed-variant": "#891d16",
+              "surface-container-highest": "#e5e2e1",
+              "secondary": "#aa352b",
+              "outline": "#926f6a",
+              "tertiary": "#00647f",
+              "surface-container-low": "#f6f3f2",
+              "secondary-fixed-dim": "#ffb4aa",
+              "primary-fixed-dim": "#ffb4aa",
+              "primary-fixed": "#ffdad5",
+              "on-surface-variant": "#5d3f3b",
+              "on-tertiary-fixed": "#001f29",
+              "tertiary-container": "#007fa0",
+              "on-secondary-container": "#6f0807",
+              "on-error": "#ffffff",
+              "outline-variant": "#e7bdb7",
+              "on-error-container": "#93000a",
+              "background": "#fcf9f8"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- Top Navigation Bar (Shared Component) -->
+<!-- Suppression Logic: Suppressed for Transactional (Login) screen as per instructions -->
+<main class="flex-grow flex items-center justify-center px-6 py-12">
+<div class="w-full max-w-md">
+<!-- Branding Area -->
+<div class="text-center mb-10">
+<div class="inline-block mb-6">
+<span class="text-4xl font-extrabold tracking-tighter text-on-surface">Apex Ledger</span>
+</div>
+<div class="flex items-center justify-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant">Secure Access</span>
+</div>
+<h1 class="text-3xl font-bold tracking-tight text-on-surface">Welcome Back</h1>
+<p class="text-on-surface-variant mt-2 font-body text-sm">Enter your credentials to manage your shared ledger.</p>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest p-10 rounded-lg shadow-sm">
+<!-- API Endpoint Placeholder: POST /v1/auth/login -->
+<form action="/v1/auth/login" class="space-y-6" method="POST">
+<!-- Email Input -->
+<div class="space-y-2">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant ml-1" for="email">Email Address</label>
+<div class="relative">
+<input class="w-full bg-surface-container-high px-4 py-4 rounded-lg border-none focus:ring-2 focus:ring-primary/40 text-on-surface placeholder:text-outline transition-all duration-200" id="email" name="email" placeholder="name@company.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant ml-1" for="password">Password</label>
+<a class="text-xs font-semibold text-primary hover:text-primary-container transition-colors duration-200" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-high px-4 py-4 rounded-lg border-none focus:ring-2 focus:ring-primary/40 text-on-surface placeholder:text-outline transition-all duration-200" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Submit Action -->
+<div class="pt-2">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-headline font-bold py-4 rounded-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2" type="submit">
+                            Login to Ledger
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+<!-- Secondary Action -->
+<div class="text-center pt-4">
+<p class="text-sm text-on-surface-variant">
+                            New to Apex? 
+                            <a class="text-primary font-bold ml-1 hover:underline" href="#">Sign Up</a>
+</p>
+</div>
+</form>
+</div>
+<!-- Trust Indicators -->
+<div class="mt-12 grid grid-cols-3 gap-4 opacity-40">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-2xl">security</span>
+<span class="text-[9px] uppercase font-bold tracking-tighter">AES-256</span>
+</div>
+<div class="flex flex-col items-center gap-2 border-x border-outline-variant/30">
+<span class="material-symbols-outlined text-2xl">account_balance</span>
+<span class="text-[9px] uppercase font-bold tracking-tighter">Bank Grade</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-2xl">encrypted</span>
+<span class="text-[9px] uppercase font-bold tracking-tighter">End-to-End</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-12 border-t border-stone-200/50 dark:border-stone-800/50 bg-[#f6f3f2] dark:bg-stone-900">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 w-full max-w-7xl mx-auto gap-4">
+<div class="font-manrope font-black text-stone-900 dark:text-stone-100">Apex Ledger</div>
+<div class="flex gap-6">
+<a class="font-inter text-xs uppercase tracking-widest text-stone-500 hover:text-red-700 transition-all" href="#">Privacy Policy</a>
+<a class="font-inter text-xs uppercase tracking-widest text-stone-500 hover:text-red-700 transition-all" href="#">Terms of Service</a>
+<a class="font-inter text-xs uppercase tracking-widest text-stone-500 hover:text-red-700 transition-all" href="#">Security</a>
+<a class="font-inter text-xs uppercase tracking-widest text-stone-500 hover:text-red-700 transition-all" href="#">Support</a>
+</div>
+<div class="font-inter text-xs uppercase tracking-widest text-stone-500">
+                © 2024 Apex Ledger. Structural Sincerity in Finance.
+            </div>
+</div>
+</footer>
+</body></html>

@@ -1,21 +1,24 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Manrope, Inter } from 'next/font/google';
 import './globals.css';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  weight: ['400', '600', '700', '800'],
+  display: 'swap',
 });
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Expenses',
-  description: 'Expenses management app',
+  title: 'GastoCompartido',
+  description: 'Shared expense management — Apex Ledger',
 };
 
 export default function RootLayout({
@@ -24,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning className={geistSans.variable}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html suppressHydrationWarning className={`${manrope.variable} ${inter.variable}`}>
+      <body className="font-body bg-surface text-on-surface antialiased">
         {children}
       </body>
     </html>
