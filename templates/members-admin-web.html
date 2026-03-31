@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Miembros - Apex Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#891d16",
+                        "secondary-container": "#fd7363",
+                        "tertiary-fixed": "#bbe9ff",
+                        "surface": "#fcf9f8",
+                        "inverse-primary": "#ffb4aa",
+                        "surface-container-high": "#eae7e7",
+                        "primary-fixed": "#ffdad5",
+                        "on-tertiary-container": "#fafdff",
+                        "secondary": "#aa352b",
+                        "on-secondary-container": "#6f0807",
+                        "on-background": "#1c1b1b",
+                        "surface-bright": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dcd9d9",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary-fixed": "#410001",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#68d3fc",
+                        "on-tertiary-fixed": "#001f29",
+                        "primary": "#bc000a",
+                        "outline": "#926f6a",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "secondary-fixed-dim": "#ffb4aa",
+                        "surface-container-highest": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "outline-variant": "#e7bdb7",
+                        "on-surface-variant": "#5d3f3b",
+                        "on-primary-fixed-variant": "#930005",
+                        "primary-container": "#e2241f",
+                        "surface-tint": "#c0000a",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "inverse-surface": "#313030",
+                        "surface-container": "#f0eded",
+                        "tertiary-container": "#007fa0",
+                        "tertiary": "#00647f",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed-variant": "#004d63",
+                        "background": "#fcf9f8",
+                        "on-primary-fixed": "#410001",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-fixed": "#ffdad5"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-[#f6f3f2] dark:bg-stone-950 flex flex-col p-6 gap-2 z-50">
+<div class="mb-10 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h1 class="text-[#bc000a] font-black italic text-xl tracking-tight leading-none">Apex Ledger</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold opacity-60">Shared Finance</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Gastos
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="file_upload">file_upload</span>
+                Importar
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+                Cuentas
+            </a>
+<!-- Active Tab: Miembros -->
+<a class="flex items-center gap-3 px-4 py-3 text-[#bc000a] bg-white dark:bg-stone-900 rounded-lg shadow-sm font-bold font-manrope tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+                Miembros
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                Pagos
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:translate-x-1 duration-300 font-manrope font-semibold tracking-tight transition-all ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Reportes
+            </a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<button class="w-full py-4 bg-primary text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Add Transaction
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Anchor -->
+<header class="fixed top-0 right-0 left-64 z-40 bg-[#fcf9f8]/80 dark:bg-stone-900/80 backdrop-blur-xl h-16 flex justify-between items-center px-8">
+<div class="flex items-center gap-4">
+<h2 class="text-2xl font-manrope font-bold tracking-tighter text-on-surface">Miembros</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-body" placeholder="Buscar miembro..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-stone-100 transition-colors">
+<span class="material-symbols-outlined text-stone-600" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-stone-100 transition-colors">
+<span class="material-symbols-outlined text-stone-600" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<img alt="User profile" class="w-10 h-10 rounded-lg object-cover" data-alt="Close up portrait of a professional man in his late 30s with a friendly expression, natural studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx8v15itzUWMklX7p72LB-fUr0Iz_zgAHe13p7QdWW365a34spQb9ycVnRLKztyn9RGHUayK5z1VwusRjq62TPkKgW_pSJQ0mFCq_36QhoJhbBcfDf_4poEIoyfhZBNMcmnIxoEk3S79Ja1aCOOZbM2t17eKgwt9SO5FcfPFufbmkQbSiBgw4TCyTm60hH3mUlXj2IyTD-SiWOa6crsKqwas1gnDFTbrcKY58zMbA-9Di1ocr20USWVfWthd9Q1nusPTuIl6tcIaI"/>
+</div>
+</div>
+</header>
+<!-- Canvas Content -->
+<section class="pt-24 pb-12 px-8 max-w-7xl mx-auto">
+<!-- Header Section with CTA -->
+<div class="flex justify-between items-end mb-10">
+<div>
+<h3 class="text-4xl font-headline font-extrabold tracking-tighter text-on-surface">Equipo de Gastos</h3>
+<p class="text-on-surface-variant mt-2 font-body">Gestiona los permisos y roles de las personas en este grupo.</p>
+</div>
+<button class="px-6 py-3 bg-primary text-on-primary rounded-lg font-manrope font-bold flex items-center gap-2 hover:bg-primary-container transition-all active:scale-95 shadow-md">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                    Nuevo Miembro
+                </button>
+</div>
+<!-- Bento Grid - Active Members -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Member Card 1 (Admin) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300 group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center relative overflow-hidden">
+<img alt="Carlos Ruiz" class="w-full h-full object-cover" data-alt="Professional headshot of a young man with glasses and beard, minimalist grey background, high-end fashion photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAap3bA27Hws1hYh5273TjDBQSkVQLukGvGmZZ8Zm7Xoown9J8sZhVBpzYWlA_zmPVG7clUUi4YwpwKJaRYoDq1Bqwk55Q8DUH0P5tv0oXVyADaNALlq4HhbjNsKpeOisd0syCGkfcvleXgZKf5doNIguwaZzTIPZrWv6ydk5L4Me2GdkjOcWOHNLO01YIGddagMaUihrzZX57kIE7fqVfZ-x0SA596ZsTqYvrwgu9jk_gc8es-iXt3b4fd3nGA_wheRnGBrq2foho"/>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<h4 class="text-xl font-headline font-bold text-on-surface">Carlos Ruiz</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded">Admin</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-on-surface-variant font-medium">Activo</span>
+</div>
+<div class="mt-6 flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-body">Unido el 12 Ene, 2024</span>
+</div>
+</div>
+<!-- Member Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300 group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-xl bg-[#00667b]/10 flex items-center justify-center relative overflow-hidden">
+<img alt="Elena Gomez" class="w-full h-full object-cover" data-alt="Young professional woman smiling, natural outdoor lighting with soft green bokeh background, high quality portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKqdZsJCssKH5cxXw4wN82xZ7mmcUA_ve-qzqXU5RCKQvNQr37VbVIp7z21wIuo4JYJvpA6dgMLGKuBx1gEsKXVfE1zP2l_oLdLRlyFDl8uad_bGh7qWsoNqmh2EZ8uGZAjSgjbRvv6A2lb97uDBji_v2ER73_kbPQdaDE2TD4-ahL_7jxHMVevI2CbBVyVnbdEwaac7dWuGfBYb5IY8Zr5fYM0S0L4KUuzLErFqwXnfSJFIY-Vy-lphQE2J8zBGT9da5W3gC0fYo"/>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<h4 class="text-xl font-headline font-bold text-on-surface">Elena Gomez</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 bg-stone-100 text-stone-600 text-[10px] font-bold uppercase tracking-wider rounded">Miembro</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-on-surface-variant font-medium">Activo</span>
+</div>
+<div class="mt-6 flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-body">Unido el 15 Ene, 2024</span>
+</div>
+</div>
+<!-- Member Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl hover:translate-y-[-4px] transition-all duration-300 group">
+<div class="flex justify-between items-start mb-6">
+<div class="w-16 h-16 rounded-xl bg-[#c2410c]/10 flex items-center justify-center relative overflow-hidden">
+<img alt="Marcos Peña" class="w-full h-full object-cover" data-alt="Confident man in business casual attire looking at the camera, clean studio lighting, high resolution portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_TzrtoVZw5zKiQ-O0gQQky_AN3Ont2FqTQyssrVsTnvi7airHqksz8RX8514LkDZOukOBkoa_5YBbZpJFDm3EEIqVtDz7mphYyPfJqvKBYDMojaJwluQWflLJ7Q6VQHbwUMrxM3hjrbj3z7_cFX10b3qBDpSQnnlSZbe5vzBQuJP3ADUrgXok5lPe1sCPQHP9DW814Po6XmVWYS9d3xqJlqJb1Cl6kPipHBVOk0_6uPuA7wSbatKoWURe__CALtWmw2nyVKp9YVw"/>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface p-1">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+<h4 class="text-xl font-headline font-bold text-on-surface">Marcos Peña</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="px-2 py-0.5 bg-stone-100 text-stone-600 text-[10px] font-bold uppercase tracking-wider rounded">Miembro</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-xs text-on-surface-variant font-medium">Activo</span>
+</div>
+<div class="mt-6 flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-body">Unido el 02 Feb, 2024</span>
+</div>
+</div>
+</div>
+<!-- Pending Invitations Section -->
+<div class="mt-16">
+<div class="flex items-center gap-3 mb-6">
+<h3 class="text-2xl font-headline font-bold text-on-surface tracking-tight">Invitaciones pendientes</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-xs font-bold">2</span>
+</div>
+<div class="bg-surface-container-low rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+<th class="px-8 py-4">Email de Invitado</th>
+<th class="px-8 py-4">Rol asignado</th>
+<th class="px-8 py-4">Fecha de envío</th>
+<th class="px-8 py-4 text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="group hover:bg-white/40 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="mail">mail</span>
+</div>
+<span class="text-sm font-medium text-on-surface">lucia.torres@example.com</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs font-semibold px-2 py-1 bg-stone-200 text-stone-700 rounded">Miembro</span>
+</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant">Hace 2 días</td>
+<td class="px-8 py-5 text-right">
+<button class="text-primary text-xs font-bold hover:underline">Reenviar</button>
+<span class="mx-2 text-outline-variant/50">|</span>
+<button class="text-error text-xs font-bold hover:underline">Cancelar</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/40 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="mail">mail</span>
+</div>
+<span class="text-sm font-medium text-on-surface">roberto.valle@example.com</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs font-semibold px-2 py-1 bg-stone-200 text-stone-700 rounded">Miembro</span>
+</td>
+<td class="px-8 py-5 text-sm text-on-surface-variant">Hace 5 horas</td>
+<td class="px-8 py-5 text-right">
+<button class="text-primary text-xs font-bold hover:underline">Reenviar</button>
+<span class="mx-2 text-outline-variant/50">|</span>
+<button class="text-error text-xs font-bold hover:underline">Cancelar</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Info Alert: Split Indicator Logic -->
+<div class="mt-12 p-6 bg-tertiary/5 rounded-xl border-l-4 border-tertiary flex items-start gap-4">
+<span class="material-symbols-outlined text-tertiary" data-icon="info">info</span>
+<div>
+<h5 class="text-tertiary font-bold font-headline leading-none mb-1">Cálculo de participación</h5>
+<p class="text-on-surface-variant text-sm font-body">Por defecto, todos los miembros activos participan por partes iguales en los gastos compartidos. Puedes ajustar estas reglas en la configuración de cada cuenta individual.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Contextual FAB (Suppressed on Members page based on guidelines, but let's assume specific use case for adding members if needed - though the button is already in header) -->
+</body></html>

@@ -17,19 +17,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { setGroups, groups, activeGroup } = useGroupStore();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  // _hydrated is set inside onRehydrateStorage, so it always updates in the
+  // same store batch as `user` — no race condition between the two.
+  const hydrated = useAuthStore((s) => s._hydrated);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
+    if (!hydrated) return;
     if (user === null) {
       clearAuth();
       router.replace('/login');
     }
-  }, [isMounted, user, router, clearAuth]);
+  }, [hydrated, user, router, clearAuth]);
 
   // Fetch groups once authenticated
   useEffect(() => {
@@ -40,7 +38,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .catch(() => {/* silently ignore */});
   }, [user, setGroups]);
 
-  if (!isMounted) {
+  if (!hydrated) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />

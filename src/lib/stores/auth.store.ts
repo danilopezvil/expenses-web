@@ -26,44 +26,54 @@ interface AuthActions {
 
 type AuthStore = AuthState & AuthActions;
 
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
+
 function setSessionCookie(value: string | null) {
   if (typeof document === 'undefined') return;
   if (value) {
-    document.cookie = `x-auth-user=${encodeURIComponent(value)}; path=/; SameSite=Strict`;
+    document.cookie = `x-auth-user=${encodeURIComponent(value)}; path=/; SameSite=Strict; Max-Age=${COOKIE_MAX_AGE}`;
   } else {
     document.cookie = 'x-auth-user=; path=/; SameSite=Strict; Max-Age=0';
   }
 }
 
+// Captured from the state creator (which runs before hydration) so it is safe
+// to call from onRehydrateStorage even when localStorage is synchronous and
+// the exported `useAuthStore` reference is not yet assigned.
+let _markHydrated: (() => void) | null = null;
+
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      isLoading: false,
-      _hydrated: false,
+    (set) => {
+      _markHydrated = () => set({ _hydrated: true });
+      return {
+        user: null,
+        accessToken: null,
+        refreshToken: null,
+        isLoading: false,
+        _hydrated: false,
 
-      setAuth: (user, accessToken, refreshToken) => {
-        if (typeof window !== 'undefined') {
-          (window as unknown as Record<string, unknown>).__zustand_auth_token__ = accessToken;
-          setSessionCookie(user.id);
-        }
-        set({ user, accessToken, refreshToken, isLoading: false });
-      },
+        setAuth: (user, accessToken, refreshToken) => {
+          if (typeof window !== 'undefined') {
+            (window as unknown as Record<string, unknown>).__zustand_auth_token__ = accessToken;
+            setSessionCookie(user.id);
+          }
+          set({ user, accessToken, refreshToken, isLoading: false });
+        },
 
-      clearAuth: () => {
-        if (typeof window !== 'undefined') {
-          delete (window as unknown as Record<string, unknown>).__zustand_auth_token__;
-          setSessionCookie(null);
-        }
-        set({ user: null, accessToken: null, refreshToken: null, isLoading: false });
-      },
+        clearAuth: () => {
+          if (typeof window !== 'undefined') {
+            delete (window as unknown as Record<string, unknown>).__zustand_auth_token__;
+            setSessionCookie(null);
+          }
+          set({ user: null, accessToken: null, refreshToken: null, isLoading: false });
+        },
 
-      setLoading: (isLoading) => set({ isLoading }),
+        setLoading: (isLoading) => set({ isLoading }),
 
-      _setHydrated: () => set({ _hydrated: true }),
-    }),
+        _setHydrated: () => set({ _hydrated: true }),
+      };
+    },
     {
       name: 'expenses-auth',
       storage: createJSONStorage(() => localStorage),
@@ -72,24 +82,13 @@ export const useAuthStore = create<AuthStore>()(
         refreshToken: state.refreshToken,
       }),
       onRehydrateStorage: () => (state) => {
-        // Restore session cookie when user comes back from localStorage
         if (state?.user) {
           setSessionCookie(state.user.id);
         }
+        // Use the captured `set` so this works even with synchronous localStorage
+        // (where useAuthStore wouldn't be assigned yet at call time).
+        _markHydrated?.();
       },
     }
   )
 );
-
-// Mark hydration complete AFTER the store is created.
-// localStorage is synchronous — by the time create() returns, rehydration is already done.
-// We use the persist API here so useAuthStore is guaranteed to be defined.
-if (typeof window !== 'undefined') {
-  if (useAuthStore.persist.hasHydrated()) {
-    useAuthStore.setState({ _hydrated: true, accessToken: null });
-  } else {
-    useAuthStore.persist.onFinishHydration(() => {
-      useAuthStore.setState({ _hydrated: true, accessToken: null });
-    });
-  }
-}

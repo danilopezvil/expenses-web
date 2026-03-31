@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#e2241f",
+              "on-tertiary": "#ffffff",
+              "on-secondary-container": "#6f0807",
+              "inverse-on-surface": "#f3f0ef",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-tint": "#c0000a",
+              "on-surface-variant": "#5d3f3b",
+              "surface-bright": "#fcf9f8",
+              "on-primary-fixed": "#410001",
+              "primary-fixed-dim": "#ffb4aa",
+              "on-error": "#ffffff",
+              "tertiary-fixed": "#bbe9ff",
+              "inverse-surface": "#313030",
+              "surface-dim": "#dcd9d9",
+              "outline-variant": "#e7bdb7",
+              "on-primary-container": "#fffbff",
+              "secondary-fixed": "#ffdad5",
+              "on-secondary-fixed-variant": "#891d16",
+              "on-surface": "#1c1b1b",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#fafdff",
+              "on-primary": "#ffffff",
+              "secondary": "#aa352b",
+              "surface": "#fcf9f8",
+              "surface-container": "#f0eded",
+              "secondary-fixed-dim": "#ffb4aa",
+              "surface-container-high": "#eae7e7",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f6f3f2",
+              "primary-fixed": "#ffdad5",
+              "on-primary-fixed-variant": "#930005",
+              "inverse-primary": "#ffb4aa",
+              "secondary-container": "#fd7363",
+              "on-secondary-fixed": "#410001",
+              "tertiary-container": "#007fa0",
+              "tertiary": "#00647f",
+              "primary": "#bc000a",
+              "error": "#ba1a1a",
+              "surface-variant": "#e5e2e1",
+              "on-tertiary-fixed-variant": "#004d63",
+              "outline": "#926f6a",
+              "on-background": "#1c1b1b",
+              "surface-container-highest": "#e5e2e1",
+              "background": "#fcf9f8",
+              "tertiary-fixed-dim": "#68d3fc",
+              "on-tertiary-fixed": "#001f29"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-manrope { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-white">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-70 z-50 flex flex-col p-6 border-r border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 font-manrope font-semibold text-sm">
+<div class="flex items-center gap-3 mb-12">
+<div class="w-10 h-10 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-xl font-black text-red-700 dark:text-red-600 leading-none">Apex Ledger</h1>
+<p class="text-[10px] uppercase tracking-widest text-stone-500 mt-1">Shared Finance</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/50 dark:hover:bg-stone-900/50 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/50 dark:hover:bg-stone-900/50 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                Expenses
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-red-700 dark:text-red-500 bg-stone-100 dark:bg-stone-900 rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_fix_high" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+                Import Wizard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/50 dark:hover:bg-stone-900/50 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="insert_chart">insert_chart</span>
+                Analytics
+            </a>
+</nav>
+<div class="mt-auto space-y-4 pt-6">
+<button class="w-full bg-primary text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-primary-container transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Expense
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-stone-500 hover:text-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="help">help</span>
+                    Help Center
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-stone-500 hover:text-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="logout">logout</span>
+                    Sign Out
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] min-h-screen bg-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-280px)] z-40 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl flex items-center justify-between px-8 h-20 shadow-sm dark:shadow-none font-manrope tracking-tight font-bold">
+<div class="flex items-center gap-4">
+<h2 class="text-stone-900 text-xl">Importar gastos</h2>
+<span class="px-2 py-1 bg-stone-100 text-[10px] uppercase tracking-widest text-stone-500 rounded">Paso 2 de 3</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-stone-500">
+<button class="material-symbols-outlined p-2 hover:bg-stone-50 rounded-full transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 hover:bg-stone-50 rounded-full transition-colors" data-icon="settings">settings</button>
+</div>
+<div class="h-10 w-10 rounded-full bg-stone-200 overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a young business man with glasses in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkCOTFqu74ttOmRbQdWE9GC6VULsv7zRllQOCdy9wMwUROZoXAyBzpfhuEz-54Cix6wCmxzV3bdaX3-Ukwc9U8Rp_l4g5czLL0xFWvp3lprWOkpSBo9fGElRfaILi1XBQgknYKnBshYUyBm42iB_N_b4wmGdRi9nDyRKEZ5i96lqpfYal8xthIvkHdEu11COcS8B8I0YOmKlyWjzDlj4t-ODZZ1jKcGiHQVfYvqxmlaVzbp8Vtf_b-InNBxvJmvp10Ehpt9hQnbT0"/>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="pt-28 px-12 pb-12">
+<!-- Summary Banner (Asymmetric Layout) -->
+<div class="grid grid-cols-12 gap-8 mb-12 items-stretch">
+<div class="col-span-8 bg-[#fffbeb] border-l-4 border-amber-400 p-8 rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 text-amber-800 mb-2">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="font-bold uppercase tracking-wider text-xs">Revisión Requerida</span>
+</div>
+<h3 class="text-3xl font-black text-amber-950 font-manrope tracking-tighter">Se detectaron algunas inconsistencias.</h3>
+<p class="text-amber-800/80 mt-2 max-w-xl">Hemos procesado tu archivo. Por favor, revisa las líneas marcadas con error o duplicados antes de proceder con la importación final al libro contable.</p>
+</div>
+<div class="flex gap-8 mt-8">
+<div>
+<p class="text-xs uppercase tracking-widest text-amber-800/60 font-bold">Listos</p>
+<p class="text-2xl font-black text-amber-900">3 gastos</p>
+</div>
+<div class="w-px bg-amber-200"></div>
+<div>
+<p class="text-xs uppercase tracking-widest text-amber-800/60 font-bold">Errores</p>
+<p class="text-2xl font-black text-red-600">1 línea</p>
+</div>
+</div>
+</div>
+<div class="col-span-4 bg-stone-900 text-white p-8 rounded-xl flex flex-col justify-center relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+<p class="text-stone-400 font-medium text-sm mb-1">Total a importar</p>
+<div class="flex items-baseline gap-1">
+<span class="text-stone-500 text-2xl font-manrope">$</span>
+<h4 class="text-6xl font-black font-manrope tracking-tighter">85.29</h4>
+</div>
+<div class="mt-6 flex items-center gap-2">
+<input checked="" class="w-5 h-5 rounded border-stone-700 bg-stone-800 text-primary focus:ring-primary focus:ring-offset-stone-900" id="skip_dupes" type="checkbox"/>
+<label class="text-sm font-medium text-stone-300" for="skip_dupes">Omitir duplicados</label>
+</div>
+</div>
+</div>
+<!-- Parsed Data Table (Architectural Ledger Style) -->
+<div class="bg-surface-container-lowest rounded-xl p-2">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-black">
+<th class="px-6 py-4">Estado</th>
+<th class="px-6 py-4">Fecha</th>
+<th class="px-6 py-4">Concepto</th>
+<th class="px-6 py-4">Categoría</th>
+<th class="px-6 py-4 text-right">Monto</th>
+<th class="px-6 py-4">Acción</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-stone-100">
+<!-- Success Row -->
+<tr class="group hover:bg-stone-50 transition-colors">
+<td class="px-6 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="text-xs font-bold text-emerald-700">Listo</span>
+</div>
+</td>
+<td class="px-6 py-6 font-manrope font-semibold text-stone-600">12 Oct 2023</td>
+<td class="px-6 py-6 font-manrope font-bold text-stone-900">Suscripción Mensual SaaS</td>
+<td class="px-6 py-6">
+<span class="px-3 py-1 bg-stone-100 rounded-full text-[11px] font-bold text-stone-500">Tecnología</span>
+</td>
+<td class="px-6 py-6 text-right font-manrope font-black text-stone-900">$29.99</td>
+<td class="px-6 py-6">
+<button class="text-stone-400 hover:text-stone-900 transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Duplicate Row -->
+<tr class="group hover:bg-orange-50/30 transition-colors bg-orange-50/10">
+<td class="px-6 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined text-lg" data-icon="refresh">refresh</span>
+</div>
+<span class="text-xs font-bold text-orange-700">Duplicado</span>
+</div>
+</td>
+<td class="px-6 py-6 font-manrope font-semibold text-stone-600">10 Oct 2023</td>
+<td class="px-6 py-6 font-manrope font-bold text-stone-900">Café de Especialidad - Team</td>
+<td class="px-6 py-6">
+<span class="px-3 py-1 bg-stone-100 rounded-full text-[11px] font-bold text-stone-500">Alimentos</span>
+</td>
+<td class="px-6 py-6 text-right font-manrope font-black text-stone-900">$15.50</td>
+<td class="px-6 py-6">
+<button class="text-stone-400 hover:text-orange-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<!-- Error Row -->
+<tr class="group hover:bg-red-50/30 transition-colors bg-red-50/10">
+<td class="px-6 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined text-lg" data-icon="close" style="font-variation-settings: 'FILL' 0;">close</span>
+</div>
+<span class="text-xs font-bold text-red-700">Error Formato</span>
+</div>
+</td>
+<td class="px-6 py-6">
+<span class="text-red-400 italic text-sm">Fecha inválida</span>
+</td>
+<td class="px-6 py-6 font-manrope font-bold text-stone-900">Reembolso Cliente XP-90</td>
+<td class="px-6 py-6">
+<span class="px-3 py-1 bg-stone-100 rounded-full text-[11px] font-bold text-stone-500">Operaciones</span>
+</td>
+<td class="px-6 py-6 text-right font-manrope font-black text-stone-900">$39.80</td>
+<td class="px-6 py-6">
+<button class="px-4 py-1.5 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition-colors">Corregir</button>
+</td>
+</tr>
+<!-- Success Row 2 -->
+<tr class="group hover:bg-stone-50 transition-colors">
+<td class="px-6 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="text-xs font-bold text-emerald-700">Listo</span>
+</div>
+</td>
+<td class="px-6 py-6 font-manrope font-semibold text-stone-600">08 Oct 2023</td>
+<td class="px-6 py-6 font-manrope font-bold text-stone-900">Papelería y Oficina</td>
+<td class="px-6 py-6">
+<span class="px-3 py-1 bg-stone-100 rounded-full text-[11px] font-bold text-stone-500">Suministros</span>
+</td>
+<td class="px-6 py-6 text-right font-manrope font-black text-stone-900">$0.00</td>
+<td class="px-6 py-6">
+<button class="text-stone-400 hover:text-stone-900 transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="mt-12 flex justify-between items-center bg-surface-container-low p-6 rounded-xl border border-stone-200/50">
+<button class="flex items-center gap-2 text-stone-600 font-bold hover:text-stone-900 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                    Atrás
+                </button>
+<div class="flex items-center gap-4">
+<p class="text-xs text-on-surface-variant max-w-[200px] text-right">Al confirmar, los gastos se añadirán permanentemente a tu flujo de caja.</p>
+<button class="bg-primary text-white px-8 py-4 rounded-lg font-manrope font-black text-sm uppercase tracking-widest hover:bg-primary-container shadow-lg shadow-primary/20 transition-all active:scale-95 duration-150">
+                        Confirmar importación
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cuentas - Architectural Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#fcf9f8",
+              "primary": "#bc000a",
+              "on-primary-fixed-variant": "#930005",
+              "on-tertiary-fixed": "#001f29",
+              "on-surface": "#1c1b1b",
+              "on-secondary-fixed": "#410001",
+              "surface-bright": "#fcf9f8",
+              "error": "#ba1a1a",
+              "tertiary-fixed": "#bbe9ff",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#ffdad5",
+              "inverse-surface": "#313030",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#e5e2e1",
+              "on-secondary-fixed-variant": "#891d16",
+              "secondary-fixed-dim": "#ffb4aa",
+              "inverse-primary": "#ffb4aa",
+              "background": "#fcf9f8",
+              "surface-container-high": "#eae7e7",
+              "on-primary": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#fd7363",
+              "on-primary-fixed": "#410001",
+              "on-background": "#1c1b1b",
+              "surface-container-low": "#f6f3f2",
+              "secondary": "#aa352b",
+              "on-error": "#ffffff",
+              "surface-container": "#f0eded",
+              "on-secondary-container": "#6f0807",
+              "primary-fixed": "#ffdad5",
+              "tertiary-fixed-dim": "#68d3fc",
+              "on-secondary": "#ffffff",
+              "on-primary-container": "#fffbff",
+              "tertiary": "#00647f",
+              "inverse-on-surface": "#f3f0ef",
+              "surface-variant": "#e5e2e1",
+              "surface-tint": "#c0000a",
+              "outline-variant": "#e7bdb7",
+              "outline": "#926f6a",
+              "on-tertiary-container": "#fafdff",
+              "primary-fixed-dim": "#ffb4aa",
+              "tertiary-container": "#007fa0",
+              "on-tertiary-fixed-variant": "#004d63",
+              "error-container": "#ffdad6",
+              "surface-dim": "#dcd9d9",
+              "primary-container": "#e2241f",
+              "on-surface-variant": "#5d3f3b"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex flex-col h-full w-64 fixed left-0 top-0 bg-[#f6f3f2] dark:bg-stone-900 p-6 space-y-4 font-manrope font-semibold text-sm">
+<div class="flex items-center space-x-3 mb-8">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="text-xl font-black text-[#1c1b1b] dark:text-white tracking-tighter">Finance Core</h1>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant">Shared Ledger</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">receipt_long</span> Expenses
+                </a>
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">cloud_upload</span> Import
+                </a>
+<!-- Active Tab: Accounts -->
+<a class="flex items-center px-4 py-3 bg-[#ffffff] dark:bg-stone-800 text-[#bc000a] dark:text-[#e2241f] rounded-lg shadow-sm translate-x-1 duration-300" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">account_balance</span> Accounts
+                </a>
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">group</span> Members
+                </a>
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">payments</span> Payments
+                </a>
+<a class="flex items-center px-4 py-3 text-[#5d3f3b] dark:text-stone-400 hover:text-[#1c1b1b] hover:bg-[#e5e2e1] dark:hover:bg-stone-800 transition-all" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span> Reports
+                </a>
+</nav>
+<div class="pt-6 border-t border-outline-variant/20">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold flex items-center justify-center space-x-2 hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+<span>Add Expense</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 h-screen overflow-y-auto bg-surface flex flex-col">
+<!-- TopAppBar (Shared Component Integration) -->
+<header class="sticky top-0 z-30 bg-[#fcf9f8]/80 dark:bg-stone-900/80 backdrop-blur-xl flex justify-between items-center w-full px-8 py-6">
+<div class="flex items-center space-x-6">
+<h2 class="text-3xl font-headline font-black text-on-surface tracking-tighter">Cuentas</h2>
+<div class="h-8 w-px bg-outline-variant/30 hidden sm:block"></div>
+<div class="hidden sm:flex items-center space-x-4">
+<span class="text-on-surface-variant text-sm font-label">Total Balance</span>
+<span class="text-xl font-headline font-bold text-primary tracking-tight">$42,940.00 <span class="text-xs font-normal">USD</span></span>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-headline font-bold text-sm flex items-center space-x-2 shadow-sm hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Agregar cuenta</span>
+</button>
+<div class="flex items-center space-x-2 ml-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Grid Content -->
+<div class="px-8 pb-12 pt-4">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Account Card 1 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">credit_card</span>
+</div>
+<span class="px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold tracking-wider rounded uppercase">CREDIT_CARD</span>
+</div>
+<h3 class="text-xl font-headline font-extrabold text-on-surface mb-1">Tarjeta Principal</h3>
+<p class="text-sm text-on-surface-variant font-medium mb-6">Titular: Alexander Wright</p>
+<div class="flex justify-between items-end border-t border-surface-container-low pt-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Disponible</p>
+<p class="text-2xl font-headline font-black text-on-surface tracking-tight">$12,450.00</p>
+</div>
+<span class="text-sm font-bold text-on-surface-variant/40">USD</span>
+</div>
+</div>
+<!-- Account Card 2 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl">payments</span>
+</div>
+<span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold tracking-wider rounded uppercase">CASH</span>
+</div>
+<h3 class="text-xl font-headline font-extrabold text-on-surface mb-1">Efectivo Oficina</h3>
+<p class="text-sm text-on-surface-variant font-medium mb-6">Titular: Depto. Operaciones</p>
+<div class="flex justify-between items-end border-t border-surface-container-low pt-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Disponible</p>
+<p class="text-2xl font-headline font-black text-on-surface tracking-tight">$2,100.00</p>
+</div>
+<span class="text-sm font-bold text-on-surface-variant/40">USD</span>
+</div>
+</div>
+<!-- Account Card 3 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">account_balance</span>
+</div>
+<span class="px-3 py-1 bg-purple-50 text-purple-700 text-[10px] font-bold tracking-wider rounded uppercase">DEBIT</span>
+</div>
+<h3 class="text-xl font-headline font-extrabold text-on-surface mb-1">Nómina Corporativa</h3>
+<p class="text-sm text-on-surface-variant font-medium mb-6">Titular: Structural Sincerity LLC</p>
+<div class="flex justify-between items-end border-t border-surface-container-low pt-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Disponible</p>
+<p class="text-2xl font-headline font-black text-on-surface tracking-tight">$28,390.00</p>
+</div>
+<span class="text-sm font-bold text-on-surface-variant/40">USD</span>
+</div>
+</div>
+<!-- Account Card 4 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-transparent hover:border-primary/10 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+</div>
+<span class="px-3 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold tracking-wider rounded uppercase">DIGITAL_WALLET</span>
+</div>
+<h3 class="text-xl font-headline font-extrabold text-on-surface mb-1">PayPal Business</h3>
+<p class="text-sm text-on-surface-variant font-medium mb-6">Titular: Alexander Wright</p>
+<div class="flex justify-between items-end border-t border-surface-container-low pt-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Disponible</p>
+<p class="text-2xl font-headline font-black text-on-surface tracking-tight">$0.00</p>
+</div>
+<span class="text-sm font-bold text-on-surface-variant/40">USD</span>
+</div>
+</div>
+</div>
+<!-- Stats / Bento Section below -->
+<section class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-8 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between overflow-hidden relative min-h-[320px]">
+<div class="z-10">
+<h4 class="text-2xl font-headline font-black text-on-surface mb-2">Visión General de Flujo</h4>
+<p class="text-on-surface-variant max-w-md">Monitorea el rendimiento de tus cuentas liquidadas en tiempo real. La sinceridad estructural en tus finanzas comienza con datos claros.</p>
+</div>
+<div class="z-10 flex space-x-8">
+<div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-primary mb-1">Ingresos</p>
+<p class="text-3xl font-headline font-black">+$52k</p>
+</div>
+<div class="w-px bg-outline-variant/30 h-12"></div>
+<div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-1">Egresos</p>
+<p class="text-3xl font-headline font-black">-$12k</p>
+</div>
+</div>
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+<div class="lg:col-span-4 bg-primary rounded-xl p-8 text-on-primary flex flex-col justify-between shadow-xl">
+<span class="material-symbols-outlined text-5xl opacity-50">auto_awesome</span>
+<div>
+<h4 class="text-xl font-headline font-black mb-2">Análisis de Liquidez</h4>
+<p class="text-sm text-white/80 leading-relaxed">Tu índice de liquidez actual es saludable. Tienes suficiente capital para cubrir 4.5 meses de gastos operativos sin ingresos adicionales.</p>
+</div>
+<button class="w-full bg-white/10 border border-white/20 py-3 rounded-lg font-bold text-sm hover:bg-white/20 transition-all mt-4">Ver Reporte Detallado</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Right Side Sheet (Formulario Lateral) -->
+<aside class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-0 transition-transform duration-500 flex flex-col border-l border-outline-variant/10">
+<div class="p-8 border-b border-surface-container flex justify-between items-center">
+<h3 class="text-2xl font-headline font-black tracking-tight">Nueva Cuenta</h3>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-8 space-y-8 no-scrollbar">
+<!-- Instruction text -->
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Completa los detalles a continuación para registrar una nueva entidad financiera en el Ledger Arquitectónico.
+                </p>
+<form class="space-y-6">
+<div class="space-y-1.5">
+<label class="text-[10px] uppercase tracking-widest font-extrabold text-on-surface-variant">Nombre de cuenta</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg py-4 px-4 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all font-medium placeholder:text-on-surface-variant/40" placeholder="Ej. Tarjeta Corporativa Platinum" type="text"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] uppercase tracking-widest font-extrabold text-on-surface-variant">Titular de la cuenta</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg py-4 px-4 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all font-medium placeholder:text-on-surface-variant/40" placeholder="Nombre completo" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-[10px] uppercase tracking-widest font-extrabold text-on-surface-variant">Tipo de cuenta</label>
+<div class="relative">
+<select class="w-full bg-surface-container-high border-none rounded-lg py-4 px-4 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all font-medium appearance-none">
+<option value="CREDIT_CARD">Credit Card</option>
+<option value="DEBIT">Debit</option>
+<option value="CASH">Cash</option>
+<option value="TRANSFER">Transfer</option>
+<option value="DIGITAL_WALLET">Digital Wallet</option>
+<option value="SHARED">Shared</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-4 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] uppercase tracking-widest font-extrabold text-on-surface-variant">Moneda</label>
+<div class="relative">
+<select class="w-full bg-surface-container-high border-none rounded-lg py-4 px-4 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all font-medium appearance-none">
+<option selected="" value="USD">USD</option>
+<option value="EUR">EUR</option>
+<option value="MXN">MXN</option>
+<option value="GBP">GBP</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-4 pointer-events-none text-on-surface-variant">attach_money</span>
+</div>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] uppercase tracking-widest font-extrabold text-on-surface-variant">Balance Inicial (Opcional)</label>
+<div class="relative">
+<span class="absolute left-4 top-4 text-on-surface-variant font-bold">$</span>
+<input class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-8 pr-4 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all font-medium" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+</form>
+<div class="bg-surface-container-low p-6 rounded-lg border-l-4 border-primary/20">
+<div class="flex space-x-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                            Las cuentas marcadas como <b>Shared</b> serán visibles para todos los miembros de la organización. Asegúrate de tener los permisos necesarios.
+                        </p>
+</div>
+</div>
+</div>
+<div class="p-8 bg-surface-container-lowest border-t border-surface-container space-y-3">
+<button class="w-full bg-primary text-on-primary py-4 rounded-lg font-headline font-black text-lg shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
+<span class="material-symbols-outlined">save</span>
+<span>Guardar Cuenta</span>
+</button>
+<button class="w-full py-3 rounded-lg font-headline font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors text-sm">
+                    Cancelar
+                </button>
+</div>
+</aside>
+<!-- Overlay for Sheet -->
+<div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-40 transition-opacity"></div>
+</div>
+</body></html>

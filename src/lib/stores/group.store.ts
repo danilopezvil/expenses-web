@@ -4,6 +4,9 @@ import type { Group } from '@/types/api.types';
 
 interface GroupState {
   activeGroup: Group | null;
+  /** Persisted ID used to restore activeGroup once the groups list is fetched.
+   *  Also handles migration from the old localStorage format. */
+  activeGroupId: string | null;
   groups: Group[];
 }
 
@@ -18,35 +21,29 @@ export const useGroupStore = create<GroupStore>()(
   persist(
     (set, get) => ({
       activeGroup: null,
+      activeGroupId: null,
       groups: [],
 
       setGroups: (groups) => {
-        const { activeGroup } = get();
-        // Keep activeGroup in sync if it's in the new list
-        const synced = activeGroup
-          ? (groups.find((g) => g.id === activeGroup.id) ?? activeGroup)
-          : null;
-        set({ groups, activeGroup: synced });
+        const { activeGroup, activeGroupId } = get();
+        const targetId = activeGroup?.id ?? activeGroupId ?? null;
+        const resolved = targetId
+          ? (groups.find((g) => g.id === targetId) ?? groups[0] ?? null)
+          : (groups[0] ?? null);
+        set({ groups, activeGroup: resolved });
       },
 
-      setActiveGroup: (group) => set({ activeGroup: group }),
+      setActiveGroup: (group) => set({ activeGroup: group, activeGroupId: group.id }),
     }),
     {
       name: 'expenses-group',
       storage: createJSONStorage(() => localStorage),
-      // Only persist the active group id — rehydrate the full object from the groups list
+      // Persist only the ID. Default merge spreads it into state so
+      // activeGroupId is available in setGroups before groups are fetched.
+      // This is also backwards-compatible with the old { activeGroupId } format.
       partialize: (state) => ({
-        activeGroupId: state.activeGroup?.id ?? null,
+        activeGroupId: state.activeGroup?.id ?? state.activeGroupId ?? null,
       }),
-      merge: (persisted, current) => {
-        const { activeGroupId } = persisted as { activeGroupId: string | null };
-        return {
-          ...current,
-          activeGroup: activeGroupId
-            ? (current.groups.find((g) => g.id === activeGroupId) ?? null)
-            : null,
-        };
-      },
     }
   )
 );
