@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { useGroupMembers, useAssignExpense } from '@/lib/queries/use-expenses';
+import { expensesApi } from '@/lib/api/expenses.api';
 import type { Expense } from '@/types/api.types';
 
 interface AssignmentEditorProps {
@@ -10,12 +12,16 @@ interface AssignmentEditorProps {
   onClose: () => void;
   groupId: string;
   expense: Expense | null;
+  expenseIds?: string[];
 }
 
-export function AssignmentEditor({ open, onClose, groupId, expense }: AssignmentEditorProps) {
+export function AssignmentEditor({ open, onClose, groupId, expense, expenseIds = [] }: AssignmentEditorProps) {
   const { data: members = [] } = useGroupMembers(groupId);
   const assignExpense = useAssignExpense(groupId);
+  const queryClient = useQueryClient();
   const [percentages, setPercentages] = useState<Record<string, number>>({});
+  const [bulkSaving, setBulkSaving] = useState(false);
+  const [bulkError, setBulkError] = useState(false);
 
   // Reset percentages when expense or members change
   useEffect(() => {
@@ -49,12 +55,31 @@ export function AssignmentEditor({ open, onClose, groupId, expense }: Assignment
     setPercentages((prev) => ({ ...prev, [memberId]: num }));
   }
 
-  function handleSave() {
-    if (!expense || !isValid) return;
+  async function handleSave() {
+    if ((!expense && expenseIds.length === 0) || !isValid) return;
     const assignments = members.map((m) => ({
       memberId: m.id,
       percentage: percentages[m.id] ?? 0,
     }));
+    const targets = expenseIds.length > 0 ? expenseIds : expense ? [expense.id] : [];
+
+    if (targets.length > 1) {
+      setBulkError(false);
+      setBulkSaving(true);
+      try {
+        await Promise.all(targets.map((expenseId) => expensesApi.assignExpense(groupId, expenseId, assignments)));
+        await queryClient.invalidateQueries({ queryKey: ['expenses', groupId] });
+        await queryClient.invalidateQueries({ queryKey: ['dashboard', groupId] });
+        onClose();
+      } catch {
+        setBulkError(true);
+      } finally {
+        setBulkSaving(false);
+      }
+      return;
+    }
+
+    if (!expense) return;
     assignExpense.mutate({ expenseId: expense.id, assignments }, { onSuccess: onClose });
   }
 
@@ -71,6 +96,11 @@ export function AssignmentEditor({ open, onClose, groupId, expense }: Assignment
             {expense && (
               <p className="text-xs text-on-surface-variant mt-0.5 truncate max-w-[260px]">
                 {expense.description}
+              </p>
+            )}
+            {!expense && expenseIds.length > 0 && (
+              <p className="text-xs text-on-surface-variant mt-0.5 truncate max-w-[260px]">
+                {expenseIds.length} gastos seleccionados
               </p>
             )}
           </div>
@@ -165,7 +195,7 @@ export function AssignmentEditor({ open, onClose, groupId, expense }: Assignment
           </div>
 
           {/* Server error */}
-          {assignExpense.error && (
+          {(assignExpense.error || bulkError) && (
             <div className="bg-error-container text-on-error-container text-sm rounded-lg px-4 py-3">
               No se pudo guardar la asignación. Intenta de nuevo.
             </div>
@@ -177,10 +207,10 @@ export function AssignmentEditor({ open, onClose, groupId, expense }: Assignment
           <button
             type="button"
             onClick={handleSave}
-            disabled={!isValid || assignExpense.isPending}
+            disabled={!isValid || assignExpense.isPending || bulkSaving}
             className="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-lg hover:bg-primary-container transition-all duration-200 active:scale-[0.98] uppercase tracking-widest text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {assignExpense.isPending ? 'Guardando...' : 'Guardar asignación'}
+            {assignExpense.isPending || bulkSaving ? 'Guardando...' : 'Guardar asignación'}
           </button>
           <button
             type="button"

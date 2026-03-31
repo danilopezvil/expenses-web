@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { useGroupStore } from '@/lib/stores/group.store';
 import { apiClient } from '@/lib/api/client';
+import { authApi } from '@/lib/api/auth.api';
 import type { Group } from '@/types/api.types';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SidebarContent } from '@/components/layout/sidebar';
@@ -13,6 +14,8 @@ import { CreateGroupDialog } from '@/components/groups/create-group-dialog';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
+  const refreshToken = useAuthStore((s) => s.refreshToken);
+  const setAuth = useAuthStore((s) => s.setAuth);
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const { setGroups, groups, activeGroup } = useGroupStore();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -20,6 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // _hydrated is set inside onRehydrateStorage, so it always updates in the
   // same store batch as `user` — no race condition between the two.
   const hydrated = useAuthStore((s) => s._hydrated);
+  const [restoringSession, setRestoringSession] = useState(false);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -29,16 +33,35 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [hydrated, user, router, clearAuth]);
 
+  useEffect(() => {
+    if (!hydrated || !user || !refreshToken) return;
+
+    const hasToken = typeof window !== 'undefined'
+      && Boolean((window as unknown as Record<string, unknown>).__zustand_auth_token__);
+
+    if (hasToken) return;
+
+    setRestoringSession(true);
+    authApi
+      .refresh(refreshToken)
+      .then((res) => setAuth(res.user, res.accessToken, res.refreshToken))
+      .catch(() => {
+        clearAuth();
+        router.replace('/login');
+      })
+      .finally(() => setRestoringSession(false));
+  }, [hydrated, user, refreshToken, setAuth, clearAuth, router]);
+
   // Fetch groups once authenticated
   useEffect(() => {
-    if (!user) return;
+    if (!user || restoringSession) return;
     apiClient
       .get<Group[]>('/groups')
       .then((res) => setGroups(res.data))
       .catch(() => {/* silently ignore */});
-  }, [user, setGroups]);
+  }, [user, restoringSession, setGroups]);
 
-  if (!hydrated) {
+  if (!hydrated || restoringSession) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
