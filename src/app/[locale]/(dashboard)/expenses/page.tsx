@@ -62,6 +62,7 @@ function ExpensesContent() {
   const [assignOpen, setAssignOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [assigningExpense, setAssigningExpense] = useState<Expense | null>(null);
+  const [bulkExpenseIds, setBulkExpenseIds] = useState<string[]>([]);
 
   const deleteExpense = useDeleteExpense(groupId);
 
@@ -130,9 +131,10 @@ function ExpensesContent() {
       {/* Assignment editor sheet */}
       <AssignmentEditor
         open={assignOpen}
-        onClose={() => { setAssignOpen(false); setAssigningExpense(null); }}
+        onClose={() => { setAssignOpen(false); setAssigningExpense(null); setBulkExpenseIds([]); }}
         groupId={groupId}
         expense={assigningExpense}
+        expenseIds={bulkExpenseIds}
       />
 
       <div className="space-y-6">
@@ -237,6 +239,24 @@ function ExpensesContent() {
           onEdit={handleEdit}
           onAssign={handleAssign}
           onDelete={handleDelete}
+          onBulkAssign={(expenseIds) => {
+            if (expenseIds.length === 0) return;
+            const selectedExpenses = data?.data?.filter((expense) => expenseIds.includes(expense.id)) ?? [];
+            if (selectedExpenses.length === 1) {
+              setAssigningExpense(selectedExpenses[0]);
+              setBulkExpenseIds([]);
+            } else {
+              setAssigningExpense(null);
+              setBulkExpenseIds(expenseIds);
+            }
+            setAssignOpen(true);
+          }}
+          onBulkDelete={(expenseIds) => {
+            if (expenseIds.length === 0) return;
+            if (!confirm(`¿Eliminar ${expenseIds.length} gasto(s) seleccionados?`)) return false;
+            expenseIds.forEach((expenseId) => deleteExpense.mutate(expenseId));
+            return true;
+          }}
         />
       </div>
     </>
