@@ -66,8 +66,8 @@ export function ExpenseForm({ open, onClose, groupId, expense }: ExpenseFormProp
           amount: expense.amount,
           date: expense.date?.split('T')[0] ?? today,
           source: expense.source,
-          accountId: expense.accountId ?? '',
-          categoryId: expense.categoryId ?? '',
+          accountId: expense.accountId ?? expense.account?.id ?? '',
+          categoryId: expense.categoryId ?? expense.category?.id ?? '',
         });
       } else {
         reset({ source: 'CARD', date: today });

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { useGroupStore } from '@/lib/stores/group.store';
 import { apiClient } from '@/lib/api/client';
@@ -13,6 +13,8 @@ import { CreateGroupDialog } from '@/components/groups/create-group-dialog';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const params = useParams<{ locale?: string }>();
+  const locale = params?.locale ?? 'es';
   const user = useAuthStore((s) => s.user);
   const refreshToken = useAuthStore((s) => s.refreshToken);
   const setAuth = useAuthStore((s) => s.setAuth);
@@ -27,14 +29,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (!hydrated) return;
-    if (user === null) {
+    if (user === null && !refreshToken) {
       clearAuth();
-      router.replace('/login');
+      router.replace(`/${locale}/login`);
     }
-  }, [hydrated, user, router, clearAuth]);
+  }, [hydrated, user, refreshToken, router, clearAuth, locale]);
 
   useEffect(() => {
-    if (!hydrated || !user || !refreshToken) return;
+    if (!hydrated || !refreshToken) return;
 
     const hasToken = typeof window !== 'undefined'
       && Boolean((window as unknown as Record<string, unknown>).__zustand_auth_token__);
@@ -47,10 +49,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .then((res) => setAuth(res.user, res.accessToken, res.refreshToken))
       .catch(() => {
         clearAuth();
-        router.replace('/login');
+        router.replace(`/${locale}/login`);
       })
       .finally(() => setRestoringSession(false));
-  }, [hydrated, user, refreshToken, setAuth, clearAuth, router]);
+  }, [hydrated, refreshToken, setAuth, clearAuth, router, locale]);
 
   // Fetch groups once authenticated
   useEffect(() => {

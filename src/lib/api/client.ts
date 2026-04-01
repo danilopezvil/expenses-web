@@ -143,7 +143,8 @@ function clearAuthAndRedirect() {
   delete (window as unknown as Record<string, unknown>).__zustand_auth_token__;
   // Delete the session cookie so middleware doesn't bounce back to dashboard
   document.cookie = 'x-auth-user=; path=/; SameSite=Strict; Max-Age=0';
-  window.location.href = '/es/login';
+  const locale = window.location.pathname.match(/^\/(es|en)(\/|$)/)?.[1] ?? 'es';
+  window.location.href = `/${locale}/login`;
 }
 
 export default apiClient;

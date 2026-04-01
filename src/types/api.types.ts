@@ -49,7 +49,9 @@ export interface Expense {
   id: string;
   groupId: string;
   accountId?: string;
+  account?: Account;
   categoryId?: string;
+  category?: Category;
   description: string;
   amount: number;
   date: string;
