@@ -162,9 +162,9 @@ export function ExpenseTable({
                     <span title={expense.description}>{truncate(expense.description)}</span>
                   </td>
                   <td className="py-5 px-4">
-                    {expense.accountId ? (
+                    {expense.accountId || expense.account?.name ? (
                       <span className="px-2 py-0.5 bg-surface-container text-on-surface-variant text-xs font-bold rounded-full">
-                        {expense.accountId.slice(0, 8)}
+                        {expense.account?.name ?? expense.accountId?.slice(0, 8)}
                       </span>
                     ) : (
                       <span className="text-outline/40 text-xs">—</span>
@@ -174,8 +174,8 @@ export function ExpenseTable({
                     {formatCurrency(expense.amount)}
                   </td>
                   <td className="py-5 px-4 text-sm text-on-surface-variant">
-                    {expense.categoryId ? (
-                      <span className="text-xs text-on-surface-variant">Cat.</span>
+                    {expense.categoryId || expense.category?.name ? (
+                      <span className="text-xs text-on-surface-variant">{expense.category?.name ?? 'Categoría'}</span>
                     ) : (
                       <span className="text-outline/40 text-xs">—</span>
                     )}

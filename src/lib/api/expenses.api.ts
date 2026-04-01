@@ -1,6 +1,13 @@
 import { apiClient } from './client';
 import type { Expense, Assignment, Account, Member, Category, PaginatedResponse } from '@/types/api.types';
 
+type CollectionResponse<T> = T[] | { data?: T[] };
+
+function unwrapCollection<T>(payload: CollectionResponse<T>): T[] {
+  if (Array.isArray(payload)) return payload;
+  return Array.isArray(payload?.data) ? payload.data : [];
+}
+
 export interface ExpenseFilters {
   month?: string;
   year?: string;
@@ -63,14 +70,20 @@ export const expensesApi = {
 
   // ── Group resources needed by the form ────────────────────────────────────
   getAccounts(groupId: string): Promise<Account[]> {
-    return apiClient.get<Account[]>(`/groups/${groupId}/accounts`).then((r) => r.data);
+    return apiClient
+      .get<CollectionResponse<Account>>(`/groups/${groupId}/accounts`)
+      .then((r) => unwrapCollection(r.data));
   },
 
   getMembers(groupId: string): Promise<Member[]> {
-    return apiClient.get<Member[]>(`/groups/${groupId}/members`).then((r) => r.data);
+    return apiClient
+      .get<CollectionResponse<Member>>(`/groups/${groupId}/members`)
+      .then((r) => unwrapCollection(r.data));
   },
 
   getCategories(groupId: string): Promise<Category[]> {
-    return apiClient.get<Category[]>(`/groups/${groupId}/categories`).then((r) => r.data);
+    return apiClient
+      .get<CollectionResponse<Category>>(`/groups/${groupId}/categories`)
+      .then((r) => unwrapCollection(r.data));
   },
 };
