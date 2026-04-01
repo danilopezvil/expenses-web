@@ -6,9 +6,9 @@ function getBaseUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   if (!apiUrl) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing NEXT_PUBLIC_API_URL in production');
+      return '/v1';
     }
-    return 'http://localhost:3000/v1';
+    return '/v1';
   }
 
   if (process.env.NODE_ENV === 'production' && !apiUrl.startsWith('https://')) {
