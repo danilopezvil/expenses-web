@@ -26,17 +26,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // same store batch as `user` — no race condition between the two.
   const hydrated = useAuthStore((s) => s._hydrated);
   const [restoringSession, setRestoringSession] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   useEffect(() => {
-    if (!hydrated) return;
-    if (user === null && !restoringSession) {
-      clearAuth();
-      router.replace(`/${locale}/login`);
-    }
-  }, [hydrated, user, router, clearAuth, locale, restoringSession]);
-
-  useEffect(() => {
-    if (!hydrated || user !== null || accessToken) return;
+    if (!hydrated || user !== null || restoringSession || sessionChecked) return;
 
     setRestoringSession(true);
     authApi
@@ -44,10 +37,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .then((res) => setAuth(res.user, res.accessToken))
       .catch(() => {
         clearAuth();
-        router.replace(`/${locale}/login`);
       })
-      .finally(() => setRestoringSession(false));
-  }, [hydrated, user, accessToken, setAuth, clearAuth, router, locale]);
+      .finally(() => {
+        setRestoringSession(false);
+        setSessionChecked(true);
+      });
+  }, [hydrated, user, restoringSession, sessionChecked, setAuth, clearAuth]);
+
+  useEffect(() => {
+    if (!hydrated || restoringSession) return;
+    if (user !== null) {
+      if (!sessionChecked) setSessionChecked(true);
+      return;
+    }
+
+    if (sessionChecked && !accessToken) {
+      clearAuth();
+      router.replace(`/${locale}/login`);
+    }
+  }, [hydrated, user, accessToken, restoringSession, sessionChecked, clearAuth, router, locale]);
 
   // Fetch groups once authenticated
   useEffect(() => {
