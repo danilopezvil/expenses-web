@@ -1,13 +1,14 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getAccessToken, setAccessToken, useAuthStore } from '@/lib/stores/auth.store';
+import { debugAuthLog, diagnoseAuthError } from '@/lib/utils/debug';
 
 function getBaseUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   if (!apiUrl) {
     if (process.env.NODE_ENV === 'production') {
-      throw new Error('Missing NEXT_PUBLIC_API_URL in production');
+      return '/v1';
     }
-    return 'http://localhost:3000/v1';
+    return '/v1';
   }
 
   if (process.env.NODE_ENV === 'production' && !apiUrl.startsWith('https://')) {
@@ -17,6 +18,8 @@ function getBaseUrl() {
 }
 
 const BASE_URL = getBaseUrl();
+
+debugAuthLog('API client configured', { baseURL: BASE_URL });
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -48,6 +51,11 @@ function addPendingRequest(resolve: (token: string) => void, reject: (error: Err
 // Request interceptor — attach access token from memory store
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const accessToken = getAccessToken();
+  debugAuthLog('Outgoing request', {
+    method: config.method,
+    url: config.url,
+    hasAccessToken: Boolean(accessToken),
+  });
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -59,6 +67,16 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const diagnosis = diagnoseAuthError(error);
+    debugAuthLog('API response error', {
+      method: originalRequest?.method,
+      url: originalRequest?.url,
+      status: error.response?.status ?? null,
+      code: error.code ?? null,
+      message: error.message,
+      responseData: error.response?.data ?? null,
+      diagnosis,
+    });
 
     if (error.response?.status === 403) {
       if (typeof window !== 'undefined') {
@@ -82,6 +100,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        debugAuthLog('Attempting token refresh');
         const { data } = await axios.post<{ accessToken: string }>(
           `${BASE_URL}/auth/refresh`,
           {},
@@ -89,6 +108,7 @@ apiClient.interceptors.response.use(
         );
 
         const { accessToken } = data;
+        debugAuthLog('Token refresh succeeded', { hasAccessToken: Boolean(accessToken) });
 
         setInMemoryToken(accessToken);
 
@@ -96,6 +116,7 @@ apiClient.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return apiClient(originalRequest);
       } catch {
+        debugAuthLog('Token refresh failed');
         onRefreshFailed(new Error('Unable to refresh session'));
         clearAuthAndRedirect();
         return Promise.reject(error);

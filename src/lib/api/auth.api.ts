@@ -1,6 +1,7 @@
 import apiClient from './client';
 import { getAccessToken, setAccessToken } from '@/lib/stores/auth.store';
 import type { User } from '@/types/api.types';
+import { debugAuthLog } from '@/lib/utils/debug';
 
 export interface RegisterDto {
   name: string;
@@ -24,6 +25,11 @@ type SessionPayload = {
 };
 
 async function normalizeSession(payload: SessionPayload): Promise<AuthResponse> {
+  debugAuthLog('Normalizing auth payload', {
+    hasInlineUser: Boolean(payload.user),
+    hasAccessToken: Boolean(payload.accessToken),
+  });
+
   if (payload.user) {
     return {
       user: payload.user,
@@ -39,6 +45,7 @@ async function normalizeSession(payload: SessionPayload): Promise<AuthResponse> 
   }
 
   const user = await apiClient.get<User>('/auth/me').then((r) => r.data);
+  debugAuthLog('Fetched /auth/me during normalizeSession', { userId: user.id });
 
   if (sessionAccessToken && previousAccessToken !== sessionAccessToken) {
     setAccessToken(previousAccessToken);
@@ -52,18 +59,21 @@ async function normalizeSession(payload: SessionPayload): Promise<AuthResponse> 
 
 export const authApi = {
   register(body: RegisterDto): Promise<AuthResponse> {
+    debugAuthLog('Register requested', { email: body.email });
     return apiClient
       .post<SessionPayload>('/auth/register', body)
       .then((r) => normalizeSession(r.data));
   },
 
   login(body: LoginDto): Promise<AuthResponse> {
+    debugAuthLog('Login requested', { email: body.email });
     return apiClient
       .post<SessionPayload>('/auth/login', body)
       .then((r) => normalizeSession(r.data));
   },
 
   refresh(): Promise<AuthResponse> {
+    debugAuthLog('Manual refresh requested');
     return apiClient
       .post<SessionPayload>('/auth/refresh', {})
       .then((r) => normalizeSession(r.data));
