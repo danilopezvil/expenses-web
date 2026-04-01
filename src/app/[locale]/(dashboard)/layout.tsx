@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const params = useParams<{ locale?: string }>();
   const locale = params?.locale ?? 'es';
   const user = useAuthStore((s) => s.user);
-  const refreshToken = useAuthStore((s) => s.refreshToken);
+  const accessToken = useAuthStore((s) => s.accessToken);
   const setAuth = useAuthStore((s) => s.setAuth);
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const { setGroups, groups, activeGroup } = useGroupStore();
@@ -29,30 +29,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (!hydrated) return;
-    if (user === null && !refreshToken) {
+    if (user === null && !restoringSession) {
       clearAuth();
       router.replace(`/${locale}/login`);
     }
-  }, [hydrated, user, refreshToken, router, clearAuth, locale]);
+  }, [hydrated, user, router, clearAuth, locale, restoringSession]);
 
   useEffect(() => {
-    if (!hydrated || !refreshToken) return;
-
-    const hasToken = typeof window !== 'undefined'
-      && Boolean((window as unknown as Record<string, unknown>).__zustand_auth_token__);
-
-    if (hasToken) return;
+    if (!hydrated || user !== null || accessToken) return;
 
     setRestoringSession(true);
     authApi
-      .refresh(refreshToken)
-      .then((res) => setAuth(res.user, res.accessToken, res.refreshToken))
+      .refresh()
+      .then((res) => setAuth(res.user, res.accessToken))
       .catch(() => {
         clearAuth();
         router.replace(`/${locale}/login`);
       })
       .finally(() => setRestoringSession(false));
-  }, [hydrated, refreshToken, setAuth, clearAuth, router, locale]);
+  }, [hydrated, user, accessToken, setAuth, clearAuth, router, locale]);
 
   // Fetch groups once authenticated
   useEffect(() => {

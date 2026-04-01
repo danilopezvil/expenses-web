@@ -46,7 +46,7 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      setAuth(res.user, res.accessToken, res.refreshToken);
+      setAuth(res.user, res.accessToken);
       router.push('/dashboard');
     } catch {
       setServerError('Error al crear la cuenta. Intenta de nuevo.');

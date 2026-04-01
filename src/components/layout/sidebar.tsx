@@ -19,11 +19,11 @@ const NAV_ITEMS = [
 export function SidebarContent({ onClose, onCreateGroup }: { onClose?: () => void; onCreateGroup?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, refreshToken, clearAuth } = useAuthStore();
+  const { user, clearAuth } = useAuthStore();
 
   async function handleLogout() {
     try {
-      if (refreshToken) await authApi.logout(refreshToken);
+      await authApi.logout();
     } catch {
       // ignore
     } finally {
