@@ -1,4 +1,5 @@
 import apiClient from './client';
+import { getAccessToken, setAccessToken } from '@/lib/stores/auth.store';
 import type { User } from '@/types/api.types';
 
 export interface RegisterDto {
@@ -30,10 +31,22 @@ async function normalizeSession(payload: SessionPayload): Promise<AuthResponse> 
     };
   }
 
+  const previousAccessToken = getAccessToken();
+  const sessionAccessToken = payload.accessToken ?? null;
+
+  if (sessionAccessToken) {
+    setAccessToken(sessionAccessToken);
+  }
+
   const user = await apiClient.get<User>('/auth/me').then((r) => r.data);
+
+  if (sessionAccessToken && previousAccessToken !== sessionAccessToken) {
+    setAccessToken(previousAccessToken);
+  }
+
   return {
     user,
-    accessToken: payload.accessToken ?? null,
+    accessToken: sessionAccessToken,
   };
 }
 
