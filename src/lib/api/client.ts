@@ -1,10 +1,27 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { getAccessToken, useAuthStore } from '@/lib/stores/auth.store';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/v1';
+function getBaseUrl() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Missing NEXT_PUBLIC_API_URL in production');
+    }
+    return 'http://localhost:3000/v1';
+  }
+
+  if (process.env.NODE_ENV === 'production' && !apiUrl.startsWith('https://')) {
+    throw new Error('NEXT_PUBLIC_API_URL must use https:// in production');
+  }
+  return apiUrl;
+}
+
+const BASE_URL = getBaseUrl();
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,26 +29,27 @@ export const apiClient = axios.create({
 
 // Track whether a token refresh is already in progress to avoid race conditions
 let isRefreshing = false;
-let pendingRequests: Array<(token: string) => void> = [];
+let pendingRequests: Array<{ resolve: (token: string) => void; reject: (error: Error) => void }> = [];
 
 function onRefreshed(token: string) {
-  pendingRequests.forEach((cb) => cb(token));
+  pendingRequests.forEach(({ resolve }) => resolve(token));
   pendingRequests = [];
 }
 
-function addPendingRequest(cb: (token: string) => void) {
-  pendingRequests.push(cb);
+function onRefreshFailed(error: Error) {
+  pendingRequests.forEach(({ reject }) => reject(error));
+  pendingRequests = [];
+}
+
+function addPendingRequest(resolve: (token: string) => void, reject: (error: Error) => void) {
+  pendingRequests.push({ resolve, reject });
 }
 
 // Request interceptor — attach access token from memory store
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  if (typeof window !== 'undefined') {
-    // Access token lives only in the Zustand store (memory), not in localStorage.
-    // We import lazily to avoid circular deps and SSR issues.
-    const raw = (window as unknown as Record<string, unknown>).__zustand_auth_token__;
-    if (raw && typeof raw === 'string') {
-      config.headers.Authorization = `Bearer ${raw}`;
-    }
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
@@ -56,7 +74,7 @@ apiClient.interceptors.response.use(
           addPendingRequest((token: string) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
             resolve(apiClient(originalRequest));
-          });
+          }, (refreshError) => reject(refreshError));
         });
       }
 
@@ -64,31 +82,21 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const refreshToken = typeof window !== 'undefined'
-          ? getStoredRefreshToken()
-          : null;
-
-        if (!refreshToken) {
-          clearAuthAndRedirect();
-          return Promise.reject(error);
-        }
-
-        const { data } = await axios.post<{ accessToken: string; refreshToken: string }>(
+        const { data } = await axios.post<{ accessToken: string }>(
           `${BASE_URL}/auth/refresh`,
-          { refreshToken },
-          { headers: { 'Content-Type': 'application/json' } }
+          {},
+          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
         );
 
-        const { accessToken, refreshToken: newRefreshToken } = data;
+        const { accessToken } = data;
 
-        // Persist new tokens via the auth store
         setInMemoryToken(accessToken);
-        setStoredRefreshToken(newRefreshToken);
 
         onRefreshed(accessToken);
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return apiClient(originalRequest);
       } catch {
+        onRefreshFailed(new Error('Unable to refresh session'));
         clearAuthAndRedirect();
         return Promise.reject(error);
       } finally {
@@ -100,49 +108,12 @@ apiClient.interceptors.response.use(
   }
 );
 
-// ---------------------------------------------------------------------------
-// Helpers that bridge between the API client and the auth store.
-// Using a lightweight approach to avoid circular imports.
-// ---------------------------------------------------------------------------
-
-function getStoredRefreshToken(): string | null {
-  try {
-    const raw = localStorage.getItem('expenses-auth');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { state?: { refreshToken?: string } };
-    return parsed?.state?.refreshToken ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function setStoredRefreshToken(token: string) {
-  try {
-    const raw = localStorage.getItem('expenses-auth');
-    if (!raw) return;
-    const parsed = JSON.parse(raw) as { state?: Record<string, unknown> };
-    if (parsed.state) {
-      parsed.state.refreshToken = token;
-      localStorage.setItem('expenses-auth', JSON.stringify(parsed));
-    }
-  } catch {
-    // ignore
-  }
-}
-
 function setInMemoryToken(token: string) {
-  (window as unknown as Record<string, unknown>).__zustand_auth_token__ = token;
+  useAuthStore.setState({ accessToken: token });
 }
 
 function clearAuthAndRedirect() {
-  try {
-    localStorage.removeItem('expenses-auth');
-  } catch {
-    // ignore
-  }
-  delete (window as unknown as Record<string, unknown>).__zustand_auth_token__;
-  // Delete the session cookie so middleware doesn't bounce back to dashboard
-  document.cookie = 'x-auth-user=; path=/; SameSite=Strict; Max-Age=0';
+  useAuthStore.getState().clearAuth();
   const locale = window.location.pathname.match(/^\/(es|en)(\/|$)/)?.[1] ?? 'es';
   window.location.href = `/${locale}/login`;
 }

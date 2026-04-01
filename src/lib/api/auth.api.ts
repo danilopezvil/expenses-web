@@ -15,7 +15,6 @@ export interface LoginDto {
 export interface AuthResponse {
   user: User;
   accessToken: string;
-  refreshToken: string;
 }
 
 export const authApi = {
@@ -27,12 +26,12 @@ export const authApi = {
     return apiClient.post<AuthResponse>('/auth/login', body).then((r) => r.data);
   },
 
-  refresh(refreshToken: string): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>('/auth/refresh', { refreshToken }).then((r) => r.data);
+  refresh(): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>('/auth/refresh', {}).then((r) => r.data);
   },
 
-  logout(refreshToken: string): Promise<void> {
-    return apiClient.post('/auth/logout', { refreshToken }).then(() => undefined);
+  logout(): Promise<void> {
+    return apiClient.post('/auth/logout', {}).then(() => undefined);
   },
 
   me(): Promise<User> {

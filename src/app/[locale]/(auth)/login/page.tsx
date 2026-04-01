@@ -31,7 +31,7 @@ export default function LoginPage() {
     setServerError(null);
     try {
       const res = await authApi.login(data);
-      setAuth(res.user, res.accessToken, res.refreshToken);
+      setAuth(res.user, res.accessToken);
       router.push('/dashboard');
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } })?.response?.status;
