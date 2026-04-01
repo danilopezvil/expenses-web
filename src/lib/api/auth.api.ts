@@ -14,20 +14,46 @@ export interface LoginDto {
 
 export interface AuthResponse {
   user: User;
-  accessToken: string;
+  accessToken?: string | null;
+}
+
+type SessionPayload = {
+  user?: User;
+  accessToken?: string | null;
+};
+
+async function normalizeSession(payload: SessionPayload): Promise<AuthResponse> {
+  if (payload.user) {
+    return {
+      user: payload.user,
+      accessToken: payload.accessToken ?? null,
+    };
+  }
+
+  const user = await apiClient.get<User>('/auth/me').then((r) => r.data);
+  return {
+    user,
+    accessToken: payload.accessToken ?? null,
+  };
 }
 
 export const authApi = {
   register(body: RegisterDto): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>('/auth/register', body).then((r) => r.data);
+    return apiClient
+      .post<SessionPayload>('/auth/register', body)
+      .then((r) => normalizeSession(r.data));
   },
 
   login(body: LoginDto): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>('/auth/login', body).then((r) => r.data);
+    return apiClient
+      .post<SessionPayload>('/auth/login', body)
+      .then((r) => normalizeSession(r.data));
   },
 
   refresh(): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>('/auth/refresh', {}).then((r) => r.data);
+    return apiClient
+      .post<SessionPayload>('/auth/refresh', {})
+      .then((r) => normalizeSession(r.data));
   },
 
   logout(): Promise<void> {
