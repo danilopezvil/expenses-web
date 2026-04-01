@@ -18,9 +18,15 @@ export default function middleware(request: NextRequest) {
 
   const hasSession = request.cookies.has('x-auth-user');
 
+  // NOTE:
+  // The access token is intentionally kept in-memory and the refresh token is
+  // persisted in localStorage (client-only). On full page refreshes, middleware
+  // runs before the client can rehydrate Zustand and refresh the session.
+  // Redirecting protected routes from middleware when `x-auth-user` is missing
+  // causes false logouts on reload. The client dashboard layout now owns that
+  // guard and restores the session with `/auth/refresh`.
   if (isProtectedRoute && !hasSession) {
-    const loginUrl = new URL(`/${routing.defaultLocale}/login`, request.url);
-    return NextResponse.redirect(loginUrl);
+    return intlMiddleware(request);
   }
 
   if (isAuthRoute && hasSession) {
