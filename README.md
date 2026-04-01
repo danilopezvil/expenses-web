@@ -16,6 +16,33 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Debug de autenticación (login)
+
+Si el login falla y no se ve suficiente detalle, puedes activar logs de diagnóstico en el navegador:
+
+1. Variable de entorno (recomendado en local):
+
+```bash
+NEXT_PUBLIC_DEBUG_AUTH=true
+```
+
+2. O desde DevTools:
+
+```js
+localStorage.setItem('debug:auth', 'true')
+```
+
+3. O por URL:
+
+```txt
+/es/login?debugAuth=true
+```
+
+Con el modo activo, se imprimen eventos `[auth-debug]` con:
+- URL base de API detectada.
+- Requests de auth (`/auth/login`, `/auth/refresh`, `/auth/me`).
+- Status code, mensaje y payload de error de backend.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

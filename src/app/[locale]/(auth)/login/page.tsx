@@ -8,6 +8,7 @@ import { useRouter } from '@/i18n/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { authApi } from '@/lib/api/auth.api';
+import { debugAuthLog } from '@/lib/utils/debug';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -29,16 +30,24 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginForm) {
     setServerError(null);
+    debugAuthLog('Login form submit', { email: data.email });
     try {
       const res = await authApi.login(data);
+      debugAuthLog('Login succeeded', { userId: res.user.id, email: res.user.email });
       setAuth(res.user, res.accessToken);
       router.push('/dashboard');
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } })?.response?.status;
+      const serverMessage = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      debugAuthLog('Login failed', { status: status ?? null, serverMessage: serverMessage ?? null });
       if (status === 401) {
         setServerError('Email o contraseña incorrectos');
       } else {
-        setServerError('Error al iniciar sesión. Intenta de nuevo.');
+        setServerError(
+          serverMessage && typeof serverMessage === 'string'
+            ? `Error al iniciar sesión: ${serverMessage}`
+            : 'Error al iniciar sesión. Intenta de nuevo.'
+        );
       }
     }
   }
