@@ -8,7 +8,7 @@ import { useRouter } from '@/i18n/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/stores/auth.store';
 import { authApi } from '@/lib/api/auth.api';
-import { debugAuthLog, diagnoseAuthError, resolveAuthApiBaseUrl } from '@/lib/utils/debug';
+import { debugAuthLog } from '@/lib/utils/debug';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -37,19 +37,18 @@ export default function LoginPage() {
       setAuth(res.user, res.accessToken);
       router.push('/dashboard');
     } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } })?.response?.status;
       const serverMessage = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
-      const diagnosis = diagnoseAuthError(err);
-      debugAuthLog('Login failed', {
-        diagnosis,
-        serverMessage: serverMessage ?? null,
-        loginEndpoint: `${resolveAuthApiBaseUrl()}/auth/login`,
-        frontendOrigin: typeof window !== 'undefined' ? window.location.origin : null,
-      });
-      setServerError(
-        serverMessage && typeof serverMessage === 'string'
-          ? `Error al iniciar sesión: ${serverMessage}`
-          : diagnosis.userMessage
-      );
+      debugAuthLog('Login failed', { status: status ?? null, serverMessage: serverMessage ?? null });
+      if (status === 401) {
+        setServerError('Email o contraseña incorrectos');
+      } else {
+        setServerError(
+          serverMessage && typeof serverMessage === 'string'
+            ? `Error al iniciar sesión: ${serverMessage}`
+            : 'Error al iniciar sesión. Intenta de nuevo.'
+        );
+      }
     }
   }
 

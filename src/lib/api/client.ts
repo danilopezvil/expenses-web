@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { getAccessToken, setAccessToken, useAuthStore } from '@/lib/stores/auth.store';
-import { debugAuthLog, diagnoseAuthError } from '@/lib/utils/debug';
+import { debugAuthLog } from '@/lib/utils/debug';
 
 function getBaseUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -67,7 +67,6 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-    const diagnosis = diagnoseAuthError(error);
     debugAuthLog('API response error', {
       method: originalRequest?.method,
       url: originalRequest?.url,
@@ -75,7 +74,6 @@ apiClient.interceptors.response.use(
       code: error.code ?? null,
       message: error.message,
       responseData: error.response?.data ?? null,
-      diagnosis,
     });
 
     if (error.response?.status === 403) {

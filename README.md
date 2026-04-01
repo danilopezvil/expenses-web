@@ -42,24 +42,6 @@ Con el modo activo, se imprimen eventos `[auth-debug]` con:
 - URL base de API detectada.
 - Requests de auth (`/auth/login`, `/auth/refresh`, `/auth/me`).
 - Status code, mensaje y payload de error de backend.
-- Diagnóstico sugerido (`cors_or_network`, `timeout`, `unauthorized`, etc.) para acelerar el troubleshooting.
-
-## Evitar CORS en desarrollo (recomendado)
-
-El frontend ahora usa `/v1` como base URL por defecto y Next.js hace proxy al backend vía `rewrites`.
-
-Variables sugeridas:
-
-```bash
-# URL interna del backend para el servidor Next.js (no expuesta al navegador)
-API_URL=http://localhost:3001
-
-# Opcional: solo si quieres forzar llamadas directas desde navegador
-# (puede requerir CORS en backend)
-# NEXT_PUBLIC_API_URL=http://localhost:3001/v1
-```
-
-Con esto, el navegador llama a `http://localhost:3002/v1/...` (mismo origen) y Next reenvía a `API_URL`, reduciendo errores CORS en login.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
