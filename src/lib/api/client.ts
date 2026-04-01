@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { getAccessToken, useAuthStore } from '@/lib/stores/auth.store';
+import { getAccessToken, setAccessToken, useAuthStore } from '@/lib/stores/auth.store';
 
 function getBaseUrl() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -109,6 +109,7 @@ apiClient.interceptors.response.use(
 );
 
 function setInMemoryToken(token: string) {
+  setAccessToken(token);
   useAuthStore.setState({ accessToken: token });
 }
 

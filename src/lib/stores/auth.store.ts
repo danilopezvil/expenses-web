@@ -17,7 +17,7 @@ interface AuthState {
 }
 
 interface AuthActions {
-  setAuth: (user: AuthUser, accessToken: string) => void;
+  setAuth: (user: AuthUser, accessToken?: string | null) => void;
   clearAuth: () => void;
   setLoading: (isLoading: boolean) => void;
   _setHydrated: () => void;
@@ -28,6 +28,10 @@ type AuthStore = AuthState & AuthActions;
 let inMemoryAccessToken: string | null = null;
 export function getAccessToken(): string | null {
   return inMemoryAccessToken;
+}
+
+export function setAccessToken(token: string | null) {
+  inMemoryAccessToken = token;
 }
 
 // Captured from the state creator (which runs before hydration) so it is safe
@@ -46,12 +50,13 @@ export const useAuthStore = create<AuthStore>()(
         _hydrated: false,
 
         setAuth: (user, accessToken) => {
-          inMemoryAccessToken = accessToken;
-          set({ user, accessToken, isLoading: false });
+          const normalizedAccessToken = accessToken ?? null;
+          setAccessToken(normalizedAccessToken);
+          set({ user, accessToken: normalizedAccessToken, isLoading: false });
         },
 
         clearAuth: () => {
-          inMemoryAccessToken = null;
+          setAccessToken(null);
           set({ user: null, accessToken: null, isLoading: false });
         },
 
